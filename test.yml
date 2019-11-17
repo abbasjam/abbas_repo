@@ -1,0 +1,6 @@
+---
+- hosts: infra
+  tasks:
+   - name: check connectivity
+     ping:
+     when: ansible_facts['distribution'] == 'Centos'

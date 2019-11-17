@@ -1,0 +1,13 @@
+---
+- hosts: webserver1
+  gather_facts: no
+  vars:
+     filename: /etc/group
+     username: root
+  tasks:
+   - name: check the connectiviry
+     shell: cat "{{ filename }}" | grep "{{ username }}"
+     register: a
+   - name: get the variable value
+     debug:
+      var: a.stdout

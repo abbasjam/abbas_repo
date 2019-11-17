@@ -1,0 +1,18 @@
+---
+- hosts: appserver1
+  vars_prompt: 
+    - name: username
+      prompt: "what is your username"
+      private: no          
+    - name: password 
+      prompt: "what is password"
+      private: yes
+      encrypt: "sha512_crypt"
+      confirm: yes
+  tasks:
+    - name: create user
+      user:
+       name: "{{ username }}"
+       password: "{{ password }}"
+       state: present
+       shell: /bin/bash

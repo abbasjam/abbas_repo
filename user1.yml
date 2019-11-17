@@ -1,0 +1,11 @@
+---
+ - hosts: webserver1
+   tasks:
+    - name: creating user
+      user:
+        name: raja
+# password create cmd -----   mkpasswd -m sha-512 > pass.txt
+        password: "$6$iIS3oZwp742j2B6$JLXfqlwk.RWMopkf9So.CHDM3FmkyG2GyR6BJDmdxJGn9yosPjv1VrRQHNbuaS7u10Q8jcwLSsiC7TTm/gMsS1"
+        create_home: yes
+        shell: /bin/bash
+        groups: sudo
