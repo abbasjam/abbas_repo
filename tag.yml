@@ -1,0 +1,9 @@
+---
+ - hosts: webserver1
+   tasks:
+           - name: check connectivity
+             ping:
+             tags: one
+           - name: display password file
+             shell: cat /etc/passwd
+             tags: two

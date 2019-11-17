@@ -1,0 +1,6 @@
+---
+- hosts: dbserver
+  tasks:
+    - name: check connectivity
+      ping:
+

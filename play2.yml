@@ -1,0 +1,6 @@
+---
+- hosts: appserver1
+  tasks:
+    - name: check connectivity
+      ping:
+

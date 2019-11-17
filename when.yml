@@ -1,0 +1,8 @@
+---
+ - hosts: infra
+   tasks:
+     - name: check connectivity
+       ping: 
+       when: ansible_facts['distribution'] == 'Ubuntu'
+       #when: ansible_facts['distribution'] == 'Centos' and ansible_facts['distribution'] == 'ubuntu')
+       #when: ansible_facts['distribution'] == 'Centos' or ansible_facts['distribution'] == 'Ubuntu')

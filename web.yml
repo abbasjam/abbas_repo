@@ -1,0 +1,25 @@
+---
+ - hosts: appserver1
+   vars:
+     pkg: apache2
+   tasks: 
+     - name: install webserver
+       apt: 
+         name: "{{ pkg }}"
+         state: present
+         update_cache: yes
+     - name: server start
+       systemd:
+          name: "{{ pkg }}"
+          enabled: yes
+          state: started
+     - name: configuring web application
+       copy: 
+         src: index.html
+         dest: /var/www/html
+         backup: yes    # old file backup
+     - name: Restart the webserver
+       systemd:
+         name: "{{ pkg }}"
+         state: restarted
+

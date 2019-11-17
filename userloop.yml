@@ -1,0 +1,14 @@
+---
+ - hosts: webserver1
+   tasks:
+     - name: create user
+       user: 
+        name: "{{ item }}"
+        password: "$6$iIS3oZwp742j2B6$JLXfqlwk.RWMopkf9So.CHDM3FmkyG2GyR6BJDmdxJGn9yosPjv1VrRQHNbuaS7u10Q8jcwLSsiC7TTm/gMsS1"
+        create_home: yes
+        shell: /bin/bash
+        groups: sudo
+        state: present
+       loop:
+         - user2
+         - user3
