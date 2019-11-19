@@ -1,5 +1,5 @@
 ---
-- hosts: appserver1
+- hosts: webserver
   vars_prompt: 
     - name: username
       prompt: "what is your username"
