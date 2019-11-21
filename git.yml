@@ -1,0 +1,11 @@
+---
+ - hosts: webserver
+   become: yes
+   tasks:
+    - name: git pull project
+      git:
+          repo: 'https://github.com/abbasjam/abbas_repo.git'
+          dest: /etc/ansible/playbook/nov21/abbas_repo
+          separate_git_dir: /etc/ansible/playbook/nov21/abbas_repo.git
+
+
