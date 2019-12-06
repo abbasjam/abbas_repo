@@ -1,3 +1,80 @@
 ---
 username: root
 filename: /etc/group
+#jboss.root=E:/software/jboss-4.0.2/server/default/deploy
+#jboss.root=D:/SOFTWARES/apache-tomcat-7.0.82/apache-tomcat-7.0.82/webapps
+jboss.root=D:/Workspace_New/.metadata/.plugins/org.eclipse.wst.server.core/tmp1/webapps
+#jboss.root=D:/USER DATAS/Desktop/jboss-as-7.1.1.Final/standalone/deployments
+#jboss.root=D:/softwares/apache-tomcat-7.0.82/webapps 
+#jboss.root=D:/USER DATAS/Desktop/WAR
+application.name=ERPTEST
+
+<?xml version="1.0"?>
+
+<project name="${application.name}" basedir="." default="usage">
+	
+	<property file="build.properties"/>
+    <property name="src.dir" value="src"/>
+	<property name="conf.dir" value="conf"/>
+    <property name="web.dir" value="war"/>
+    <property name="build.dir" value="${web.dir}/WEB-INF/classes"/>
+	<property name="deploy.path" value="${jboss.root}"/>
+    <property name="name" value="${application.name}"/>
+
+    <path id="master-classpath">
+        <fileset dir="${web.dir}/WEB-INF/lib">
+            <include name="*.jar"/>
+        </fileset>
+       <pathelement path="${build.dir}"/>
+    </path>
+
+    <target name="usage">
+        <echo message=""/>
+        <echo message="${name} build file"/>
+        <echo message="-----------------------------------"/>
+        <echo message=""/>
+        <echo message="Available targets are:"/>
+        <echo message=""/>
+        <echo message="build     --> Build the application"/>
+        <echo message="deploy    --> Deploy application as directory"/>
+        <echo message="deploywar --> Deploy application as a WAR file"/>
+    	<echo message="-----------------------------------"/>
+        <echo message=""/>
+    </target>
+
+    <target name="build" description="Compile main source tree java files">
+        <mkdir dir="${build.dir}"/>
+          </target>
+
+    <target name="deploy" depends="build" description="Deploy application"/>
+    
+	<target name="deploywar" depends="build" description="Deploy application as a WAR file">
+		<war destfile="${name}.war"
+             webxml="${web.dir}/WEB-INF/web.xml">
+            <fileset dir="${web.dir}">
+                <include name="**/*.*"/>
+            </fileset>
+        </war>
+        <copy todir="${deploy.path}" preservelastmodified="true">
+            <fileset dir=".">
+                <include name="*.war"/>
+            </fileset>
+        </copy>
+    </target>
+
+	<target name="clean" description="Clean output directories">
+        <delete>
+            <fileset dir="${build.dir}">
+                <include name="**/*.class"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="undeploy" description="Un-Deploy application">
+        <delete>
+            <fileset dir="${deploy.path}/${name}">
+                <include name="**/*.war"/>
+            </fileset>
+        </delete>
+    </target>
+</project>
