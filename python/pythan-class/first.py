@@ -1,0 +1,5 @@
+print ("Welcome to Python World!!!!")
+x=100
+y=200
+z= x*y
+print (z)

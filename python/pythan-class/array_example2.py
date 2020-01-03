@@ -1,0 +1,11 @@
+import array
+print ("Array Manipulation")
+print ("-------------------")
+x=array.array("i",[1,2,3,4,5])
+print ("Given Array is :",x)
+x.append(19)
+print ("Aftetr append():",x)
+x.extend([10,11,12,13])
+print ("After Extend() :",x)
+x.insert(1,300)
+print ("After insert():",x)
