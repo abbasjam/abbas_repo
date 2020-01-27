@@ -1,0 +1,7 @@
+print ("file Handling")
+print ("------------")
+fp=open("sample.txt","a")
+fp.write("Totally 6 weeks\n")
+fp.write("It is going to be completed\n")
+fp.write("Thank you\n")
+fp.close()

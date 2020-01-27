@@ -1,0 +1,8 @@
+print ("file Handling")
+print ("------------")
+fp=open("sample1.txt","r")
+x=fp.readline()
+print (x)
+y=fp.readline()
+print(y)
+fp.close()
