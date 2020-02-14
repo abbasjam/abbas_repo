@@ -1,6 +1,6 @@
 ---
 - hosts: infra
   tasks:
-   - name: check connectivity
+   - name: check connectivity in infra group
      ping:
      when: ansible_facts['distribution'] == 'Centos'
