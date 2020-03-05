@@ -1,0 +1,552 @@
+[
+
+172.104.47.95  webserver1
+
+172.105.50.54  dbserver1
+
+139.162.195.46 appserver1
+
+change line no 71 for ansible.cfg 
+
+[webserver]
+webserver1
+[dbserver]
+dbserver1
+[appserver]
+appserver1
+
+
+Adhoc command 
+
+ansible webserver1 -m shell -a "cat /etc/passwd" -k 
+
+-a argument
+
+
+
+ansible webserver1 -m copy -a "src=file1 dest=. backup=yes" -k
+
+(backup=yes    if file already have  take backup of old file )
+
+lineinifile ( add or change in particular line )
+
+copy
+lineinfile
+user
+yum/apt-get
+
+
+Playbook
+--------
+
+start with ---
+end with ...
+
+
+
+key value pair
+list
+dictionary
+
+key value pair
+
+fruit: apple 
+
+fruit key
+apple value 
+
+
+list
+
+---
+-
+ fruit:
+  - apple
+  - orange
+  - pinapple
+
+dictionary
+
+fruit
+ - apple 
+     fat: dd
+     cal: ss
+ 
+
+
+playbook having the following section
+
+host
+varibale 
+roles
+handlers
+tasks
+
+mkdir playbooks
+vim first.yml
+
+---
+#host
+- host: webserver1
+#variables
+#roles
+#handler
+#tasks
+  tasks:
+  gather_facts: no
+    - name: chk the connectivity
+      ping:  
+
+ansible-playbook --syntax-check first.yml
+
+
+ansbible webserver -m setup -k	( it will display the server details )
+
+
+variables declaration as host
+
+vi /etc/ansible/hosts
+
+machine3 anisble_ssh_pass="passwod"
+
+
+variables diclaration in yaml file
+-----------------------------------
+
+--
+- hosts: machine3
+  gather_facts: no
+  tasks:
+   - name: check the connectivity
+    shell: cat /etc//passwd | grep root
+    register: a					( store the value in a variables)
+    
+   - name: get the variable value
+     debug: 					(debug module)
+      var: a.stdout				(get variables)
+
+
+
+variables declarationg
+
+
+--
+- hosts: machine3
+  gather_facts: no
+#variables
+  vars:
+   filename: /etc/group
+   username: root
+  tasks:
+   - name: check the connectivity
+    shell: cat "{{ filename }}" | grep "{{ username }}"
+    register: a					( store the value in a variables)
+    
+   - name: get the variable value
+     debug: 					(debug module)
+      var: a.stdout				(get varibles)
+
+
+Variables declaration using file
+
+--
+- hosts: machine3
+  gather_facts: no
+#variables
+  vars_files:
+   - hello.yml
+  tasks:
+   - name: check the connectivity
+    shell: cat "{{ filename }}" | grep "{{ username }}"
+    register: a					( store the value in a variables)
+    
+   - name: get the variable value
+     debug: 					(debug module)
+      var: a.stdout	
+
+
+hello.yml
+
+username: root
+filename: /etc/group
+
+...
+
+
+
+
+user creation
+
+	- hosts: machine1,machine2,machine3
+  tastk:
+   - name: creating user
+     user:
+      name: abbas
+      password: "aaa"
+      create_home: yes
+      shell: /bin/bash
+      groups: sudo 	(groups for secondary group)
+
+
+passwd creation:
+
+mkpasswd -m sha-512 > pass.txt
+
+user delete - 
+------------
+
+user2.yml
+
+---
+- hosts: machine2
+  var_prompt: 
+    - name: username
+      prompt: "what is your username"
+      private: no               (visible)
+
+    - name: password 
+      prompt: "what is password"
+      private: yes
+      encrypt: "sha512_crypt"
+      confirm: yes
+    tasks:
+    - name: create user
+      user:
+       name: "{{ username }}"
+       password: "{{ password }}"
+       state: present
+       shell: /bin/bash
+
+
+---
+- host: machine3
+  tastk:
+   - name: creating user
+     user:
+      name: "{{ item }}"
+      password: "aaa"
+      create_home: yes
+      shell: /bin/bash
+      groups: sudo 	(groups for secondary group)
+      state: present
+     loop:
+       - user5
+       - user6  
+
+variables declaration for group
+set password for group
+
+vi /etc/ansible/hosts
+[infra:vars]
+ansible_ssh_pass="hello!!@#"
+
+
+condition:
+
+---
+- hosts: infra
+  tasks:
+   - name: check connectivity
+     ping:
+     when: ansible_facts['distribution'] == 'Centos'
+
+
+
+ using and condition
+---
+- hosts: infra
+  tasks:
+   - name: check connectivity
+     ping:
+     when: (ansible_facts['distribution'] == 'Centos' and ansible_facts['distribution'] == 'Centos')
+
+
+using or condition:
+
+
+---
+- hosts: infra
+  tasks:
+   - name: check connectivity
+     ping:
+     when: (ansible_facts['distribution'] == 'Centos' or ansible_facts['distribution'] == 'Centos')
+
+
+webserver configuration
+
+---
+- hosts: machine3
+  vars:
+   pkg: apache2
+  tasks:
+   - name: install webserver
+     apt:
+      name: "{{ pkg }}"
+      state: present
+      update_cache: yes
+   - name: server start
+     systemd:
+       name: "{{ pkg }}"
+       enabled: yes
+       state: started
+   - name: configuring web application
+     copy: 
+      src: index.html
+      dest: /var/www/html
+      backup: yes
+   - name: Restart the webserver
+     systemd:
+       name: "{{ pkg }}"
+       state: restarted
+ 
+
+handlers
+--------
+
+---
+- hosts: machine3
+  vars:
+   pkg: apache2
+  handlers: 
+     - name: webserver_start
+     systemd:
+       name: "{{ pkg }}"
+       enabled: yes
+       state: started
+
+      - name: webserver_restart
+         systemd:
+         name: "{{ pkg }}"
+       enabled: yes
+       state: started
+
+
+  tasks:
+   - name: install webserver
+     apt:
+      name: "{{ pkg }}"
+      state: present
+      update_cache: yes# 
+   - name: server start
+     systemd:
+       name: "{{ pkg }}"
+       enabled: yes
+       state: started
+       notify:
+       - start_webserver
+   - name: configuring web application
+     copy: 
+      src: index.html
+      dest: /var/www/html
+      backup: yes
+     notify: 
+       - restart_webserver
+ 
+
+ansible vault - for encrypt file
+
+
+# ansible-vault encrypt when.yml
+
+edit encrypt file
+
+
+# ansible-vault edit when.yml
+
+
+run yml file
+
+# ansible-vault when.yml -k --ask-vault-pass
+
+
+change vault passwd
+
+# ansible-vault rekey when.yml
+
+decrypt or remove 
+
+
+# ansible-vault decrypt when.yml 
+
+
+ansible vault create
+
+# ansible-vault test.yml
+
+
+Add multiple playbook
+
+play1.yml
+
+---
+- hosts: machine1
+  tasks:
+    - name: check connectivity
+      ping:
+
+
+play2.yml
+
+---
+- hosts: machine2
+  tasks:
+    - name: check connectivity
+      ping:
+
+
+plays.yml
+
+---
+- import_playbook: play1.yml
+- import_playbook: play2.yml
+
+
+
+
+tags:
+------
+
+to run particular task using tags
+
+tag.yml
+
+---
+- hosts: machine1
+  tasks:
+    - name: check connectivity
+      ping:
+      tags: one
+   - name: check connectivity
+      shell: cat /etc/passwd
+      tags: two
+
+
+# ansible-playbook --tags one tag.yml
+
+# ansible-playbook --tags two tag.yml
+
+# ansible-playbook --tags two,one tag.yml
+
+
+Roles
+-----
+
+
+
+---
+- name: Configuring the EC2 Instance
+  hosts: localhost
+  connection: local
+  vars:
+       count: {{ count }}
+       volumes:
+               - device_name: /dev/sda1
+                 volume_size: {{ volume-size }}    
+ 
+- name: Launching an EC2 Instance
+  local_action: ec2
+  instance_type={{ instance_type}}
+  image={{ ami }}
+  region={{ region }}
+  keypair={{ pem }}
+  count={{count}}
+  instance_profile_name={{ instance_profile_name }}
+  group={{ security_group }}
+  wait=true
+  volumes={{volumes}}
+  register: ec2
+ 
+- name: Associating after allocating elastic IP
+  eip:
+      in_vpc: yes
+      reuse_existing_ip_allowed: yes
+      state: present
+      region: "{{ region }}"
+      device_id: "{{ ec2.instance_id[0] }}"
+      register: elastic_ip
+ 
+- name: Waiting for the instance to come
+  local_action: wait_for
+              host={{ item.private_ip }}
+              state=started
+              port=22
+  with_items: ec2.instance
+ 
+- name: Adding tags to the EC2 Instance"
+  local_action: ec2_tag
+              region={{ region }}
+              resource={{ item.id }}
+              state=present
+  with_items: ec2.instances
+  args:
+   tags:
+       Name: "{{ name }}"
+       Env: "{{ Env }}"
+       Type: microservice
+  register: tag
+
+ansible-playbook playbook_name.yml –extra-vars volume-size=10 -e instance_type=t2.micro -e region=us=east-1 -e keypair=sample.pem -e count=1
+
+https://www.bogotobogo.com/DevOps/Ansible/Ansible-aws-creating-ec2-instance.php
+
+Requirements
+Requirements (on host that executes module):
+
+python >= 2.6
+boto - Ansible's EC2 module uses python-boto library to call AWS API, and boto needs AWS credentials in order to function. So we need the boto installed on our local host. Though there are many ways to set our AWS credentials, in this tutorial, we'll create a file under our user home folder (~/.boto):
+[Credentials]
+AWS_ACCESS_KEY_ID=KID...CWU
+AWS_SECRET_ACCESS_EY=3qv...DSP
+
+
+Creating an instance - I
+Here is our playbook (site.yml) to create an instance:
+
+---
+- name: Create a new Demo EC2 instance
+  hosts: localhost
+  gather_facts: False
+
+  vars:
+      region: us-east-1
+      instance_type: t2.nano
+      ami: ami-f4cc1de2  # Ubuntu 16.04 LTS
+      keypair: einsteinish # pem file name
+  
+  tasks:
+
+    - name: Create an ec2 instance
+      ec2:
+         key_name: "{{ keypair }}"
+         group: einsteinish  # security group name
+         instance_type: "{{ instance_type}}"
+         image: "{{ ami }}"
+         wait: true
+         region: "{{ region }}"
+         count: 1  # default
+         count_tag:
+            Name: Demo
+         instance_tags:
+            Name: Demo
+         vpc_subnet_id: subnet-cef59af4
+         assign_public_ip: yes
+      register: ec2
+
+
+Note that when launching an EC2 instance with ansible via the ansible ec2 module, the hosts variable should point to localhost and gather_facts should be set to False.
+
+The value of the variables will be passed when executing the playbook. The "{{ }}" is being used to evaluate the value of the variable. The statement wait: true is used to let ansible wait for the instance to come.
+
+The statement register: ec2 registers the output in ec2 variable so that we can run the query to find out different properties of the instance.
+
+
+Let's run the playbook:
+
+$ ansible-playbook site.yml
+
+
+
+
+
+
+

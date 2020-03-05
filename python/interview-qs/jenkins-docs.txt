@@ -1,0 +1,94 @@
+JENKINS DOCUMENTS
+------------------
+
+
+
+
+What is Continuous Integration?
+In Continuous Integration after a code commit, the software is built and tested immediately. In a large project with many developers, commits are made many times during a day. With each commit code is built and tested. If the test is passed, build is tested for deployment. If deployment is a success, the code is pushed to production. This commit, build, test, and deploy is a continuous process and hence the name continuous integration/deployment.
+
+A Continuous Integration Pipeline is a powerful instrument that consists of a set of tools designed to host, monitor, compile and test code, or code changes, like:
+
+Continuous Integration Server (Jenkins, Bamboo, CruiseControl, TeamCity, and others)
+Source Control Tool (e.g., CVS, SVN, GIT, Mercurial, Perforce, ClearCase and others)
+Build tool (Make, ANT, Maven, Ivy, Gradle, and others)
+Automation testing framework (Selenium, Appium, TestComplete, UFT, and others)
+
+
+Jenkins Plugins
+By default, Jenkins comes with a limited set of features. If you want to integrate your Jenkins installation with version control tools like Git, then you need to install plugins related to Git. In fact, for integration with tools like Maven, Amazon EC2, you need to install respective plugins in your Jenkins.
+
+Conclusion:
+In Continuous Integration, after a code commit, the software is built and tested immediately
+Jenkins is an open source Continuous Integration server capable of orchestrating a chain of actions
+Before Jenkins when all Developers had completed their assigned coding tasks, they used to commit their code all at same time. Later, Build is tested and deployed.
+After Jenkins the code is built and test as soon as Developer commits code. Jenkin will build and test code many times during the day
+By default, Jenkins comes with a limited set of features. If you want to integrate your Jenkins installation with version control tools like Git, then you need to install plugins related to Git
+The biggest pros of Jenkins is that it is managed by the community which holds public meetings and take inputs from the public for the development of Jenkins projects
+The biggest con of Jenkin is that Its interface is out dated and not user friendly compared to current UI trends.
+
+
+Software Requirements:
+
+Since Jenkins runs on Java, you need either latest version of Java Development Kit (JDK) or Java Runtime Environment (JRE).
+
+
+What is a Jenkins freestyle project?
+
+A Jenkins project is a repeatable build job which contains steps and post-build actions. The types of actions you can perform in a build step or post-build action are quite limited. There are many standard plugins available within a Jenkins freestyle project to help you overcome this problem. They allow you to configure build triggers and offers project-based security for your Jenkins project.
+
+
+What is Jenkins Pipeline?
+
+In Jenkins, a pipeline is a group of events or jobs which are interlinked with one another in a sequence.
+
+In simple words, Jenkins Pipeline is a combination of plugins that support the integration and implementation of continuous delivery pipelines using Jenkins. A pipeline has an extensible automation server for creating simple or complex delivery pipelines "as code," via pipeline DSL (Domain-specific Language).
+
+BUILD --- DEPLOY ---  TEST ---- RELEASE
+
+
+What is a JenkinsFile?
+Jenkins pipelines can be defined using a text file called JenkinsFile. You can implement pipeline as code using JenkinsFile, and this can be defined by using a domain specific language (DSL). With JenkinsFile, you can write the steps needed for running a Jenkins pipeline.
+
+The benefits of using JenkinsFile are:
+
+You can create pipelines automatically for all branches and execute pull requests with just one JenkinsFile.
+You can review your code on the pipeline
+You can audit your Jenkins pipeline
+This is the singular source for your pipeline and can be modified by multiple users.
+JenkinsFile can be defined by either Web UI or with a JenkinsFile.
+
+
+
+Declarative versus Scripted pipeline syntax:
+
+There are two types of syntax used for defining your JenkinsFile.
+
+Declarative
+Scripted
+Declarative:
+
+Declarative pipeline syntax offers an easy way to create pipelines. It contains a predefined hierarchy to create Jenkins pipelines. It gives you the ability to control all aspects of a pipeline execution in a simple, straight-forward manner.
+
+Scripted:
+
+Scripted Jenkins pipeline runs on the Jenkins master with the help of a lightweight executor. It uses very few resources to translate the pipeline into atomic commands. Both declarative and scripted syntax are different from each other and are defined totally differently.
+
+
+
+Jenkins Pipeline Concepts
+Term	Description
+Pipeline	The pipeline is a set of instructions given in the form of code for continuous delivery and consists of instructions needed for the entire build process. With pipeline, you can build, test, and deliver the application.
+Node	The machine on which Jenkins runs is called a node. A node block is mainly used in scripted pipeline syntax.
+Stage	A stage block contains a series of steps in a pipeline. That is, the build, test, and deploy processes all come together in a stage. Generally, a stage block is used to visualize the Jenkins pipeline process.
+Step	A step is nothing but a single task that executes a specific process at a defined time. A pipeline involves a series of steps.
+
+
+
+
+What is CI?
+Continuous integration is a software development method where members of the team can integrate their work at least once in a day. In this method, every integration is checked by an automated build to search the error. The CI concept was first introduced over two decades ago to avoid "integration hell," which happens when integration is put off till the end of a project.
+
+
+
+

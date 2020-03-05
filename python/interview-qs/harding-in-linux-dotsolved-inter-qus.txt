@@ -1,0 +1,322 @@
+what is harding in linux server
+
+In computing, hardening is usually the process of securing a system by reducing its surface of vulnerability. A system has a larger vulnerability surface the more that it does; in principle a single-function system is more secure than a multipurpose one. Reducing available vectors of attack typically includes the removal of unnecessary software, unnecessary usernames or logins and the disabling or removal of unnecessary services.
+
+2
+
+Hardening is a process of securely configuring weak(vulnerability) point of a system like there may be unused port, services or useless software running that may create weak point in your system. these weak point may be used by other's to enter in your system.
+
+For example in Linux systems there is a file called /etc/hosts is used to allow/disallow users as per policy. So you may need to change the permissions of this file chmod 700 /etc/hosts.allow or chmod 000 /etc/hosts.allow
+
+In computing, hardening is usually the process of securing a system by reducing its surface of vulnerability, which is larger when a system performs more functions; in principle a single-function system is more secure than a multipurpose one.
+
+
+ Disk Partitions
+Physical System Security
+Configure the BIOS to disable booting from CD/DVD, External Devices, Floppy Drive in BIOS. Next, enable BIOS password & also protect GRUB with password to restrict physical access of your system.
+
+
+3	Minimize Packages to Minimize Vulnerability  disable unwanted services from the server to minimize valnerablility. use the chkcofig command to findout services which are running on runlevel 3
+
+4. Check Listening Network Ports  netstat -tulpn
+
+5. 5. Use Secure Shell(SSH)
+
+# vi /etc/ssh/sshd_config
+
+PermitRootLogin no
+
+AllowUsers username
+
+6. Keep System updated
+
+7. Lockdown Cronjobs
+
+Cron has it’s own built in feature, where it allows to specify who may, and who may not want to run jobs. This is controlled by the use of files called /etc/cron.allow and /etc/cron.deny. To lock a user using cron, simply add user names in cron.deny and to allow a user to run cron add in cron.allow file. If you would like to disable all users from using cron, add the ‘ALL‘ line to cron.deny file.
+
+# echo ALL >>/etc/cron.deny
+
+
+8. Disable USB stick to Detect
+Many times it happens that we want to restrict users from using USB stick in systems to protect and secure data from stealing. Create a file ‘/etc/modprobe.d/no-usb‘ and adding below line will not detect USB storage.
+
+install usb-storage /bin/true
+
+9. Turn on SELinux
+
+# sestatus
+If it is disabled, enable SELinux using the following command.
+
+# setenforce enforcing
+
+
+10. Remove KDE/GNOME Desktops
+
+# yum groupremove "X Window System"
+
+11. Turn Off IPv6
+# vi /etc/sysconfig/network
+NETWORKING_IPV6=no
+IPV6INIT=no
+
+
+12. Restrict Users to Use Old Passwords
+
+12. Restrict Users to Use Old Passwords
+This is very useful if you want to disallow users to use same old passwords. The old password file is located at /etc/security/opasswd. This can be achieved by using PAM module.
+
+Open ‘/etc/pam.d/system-auth‘ file under RHEL / CentOS / Fedora.
+
+# vi /etc/pam.d/system-auth
+Open ‘/etc/pam.d/common-password‘ file under Ubuntu/Debian/Linux Mint.
+
+# vi /etc/pam.d/common-password
+Add the following line to ‘auth‘ section.
+
+auth        sufficient    pam_unix.so likeauth nullok
+Add the following line to ‘password‘ section to disallow a user from re-using last 5 password of his or her.
+
+password   sufficient    pam_unix.so nullok use_authtok md5 shadow remember=5
+Only last 5 passwords are remember by server. If you tried to use any of last 5 old passwords, you will get an error like.
+
+Password has been already used. Choose another.
+
+13. How to Check Password Expiration of User
+In Linux, user’s passwords are stored in ‘/etc/shadow‘ file in encrypted format. To check password expiration of user’s, you need to use ‘chage‘ command. It displays information of password expiration details along with last password change date. These details are used by system to decide when a user must change his/her password.
+
+To view any existing user’s aging information such as expiry date and time, use the following command.
+
+#chage -l username
+To change password aging of any user, use the following command.
+
+#chage -M 60 username
+#chage -M 60 -m 7 -W 7 userName
+Parameters
+-M Set maximum number of days
+-m Set minimum number of days
+-W Set the number of days of warning
+
+14. Lock and Unlock Account Manually
+The lock and unlock features are very useful, instead of removing an account from the system, you can lock it for an week or a month. To lock a specific user, you can use the follow command.
+
+# passwd -l accountName
+Note : The locked user is still available for root user only. The locking is performed by replacing encrypted password with an (!) string. If someone trying to access the system using this account, he will get an error similar to below.
+
+# su - accountName
+This account is currently not available.
+To unlock or enable access to an locked account, use the command as. This will remove (!) string with encrypted password.
+
+# passwd -u accountName
+
+
+15. Enforcing Stronger Passwords
+A number of users use soft or weak passwords and their password might be hacked with a dictionary based or brute-force attacks. The ‘pam_cracklib‘ module is available in PAM (Pluggable Authentication Modules) module stack which will force user to set strong passwords. Open the following file with an editor.
+
+Read Also:
+
+# vi /etc/pam.d/system-auth
+And add line using credit parameters as (lcredit, ucredit, dcredit and/or ocredit respectively lower-case, upper-case, digit and other)
+
+/lib/security/$ISA/pam_cracklib.so retry=3 minlen=8 lcredit=-1 ucredit=-2 dcredit=-2 ocredit=-1
+
+
+16. Enable Iptables (Firewall)
+It’s highly recommended to enable Linux firewall to secure unauthorised access of your servers. Apply rules in iptables to filters incoming, outgoing and forwarding packets. We can specify the source and destination address to allow and deny in specific udp/tcp port number.
+
+
+17. Disable Ctrl+Alt+Delete in Inittab
+In most Linux distributions, pressing ‘CTRL-ALT-DELETE’ will takes your system to reboot process. So, it’s not a good idea to have this option enabled at least on production servers, if someone by mistakenly does this.
+
+This is defined in ‘/etc/inittab‘ file, if you look closely in that file you will see a line similar to below. By default line is not commented out. We have to comment it out. This particular key sequence signalling will shut-down a system.
+
+# Trap CTRL-ALT-DELETE
+#ca::ctrlaltdel:/sbin/shutdown -t3 -r now
+
+
+18. Checking Accounts for Empty Passwords
+Any account having an empty password means its opened for unauthorized access to anyone on the web and it’s a part of security within a Linux server. So, you must make sure all accounts have strong passwords and no one has any authorized access. Empty password accounts are security risks and that can be easily hackable. To check if there were any accounts with empty password, use the following command.
+
+# cat /etc/shadow | awk -F: '($2==""){print $1}'
+
+
+21. Review Logs Regularly
+Move logs in dedicated log server, this may prevents intruders to easily modify local logs. Below are the Common Linux default log files name and their usage:
+
+/var/log/message – Where whole system logs or current activity logs are available.
+/var/log/auth.log – Authentication logs.
+/var/log/kern.log – Kernel logs.
+/var/log/cron.log – Crond logs (cron job).
+/var/log/maillog – Mail server logs.
+/var/log/boot.log – System boot log.
+/var/log/mysqld.log – MySQL database server log file.
+/var/log/secure – Authentication log.
+/var/log/utmp or /var/log/wtmp : Login records file.
+/var/log/yum.log: Yum log files.
+
+
+22. Important file Backup
+In a production system, it is necessary to take important files backup and keep them in safety vault, remote site or offsite for Disasters recovery.
+
+
+23. NIC Bonding
+There are two types of mode in NIC bonding, need to mention in bonding interface.
+
+mode=0 – Round Robin
+mode=1 – Active and Backup
+NIC Bonding helps us to avoid single point of failure. In NIC bonding, we bond two or more Network Ethernet Cards together and make one single virtual Interface where we can assign IP address to talk with other servers. Our network will be available in case of one NIC Card is down or unavailable due to any reason.
+
+
+24. Keep /boot as read-only
+Linux kernel and its related files are in /boot directory which is by default as read-write. Changing it to read-only reduces the risk of unauthorized modification of critical boot files. To do this, open “/etc/fstab” file.
+
+# vi /etc/fstab
+Add the following line at the bottom, save and close it.
+
+LABEL=/boot     /boot     ext2     defaults,ro     1 2
+
+
+25. Ignore ICMP or Broadcast Request
+Add following line in “/etc/sysctl.conf” file to ignore ping or broadcast request.
+
+Ignore ICMP request:
+net.ipv4.icmp_echo_ignore_all = 1
+
+Ignore Broadcast request:
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+Load new settings or changes, by running following command
+
+#sysctl -p
+If you’ve missed any important security or hardening tip in the above list, or you’ve any other tip that needs to be included in the list. Please drop your comments in our comment box. TecMint is always interested in receiving comments, suggestions as well as discussion for improvement.
+
+
+
+
+
+how to find last update the rpm?
+
+vi /var/log/rpm.log
+
+
+---------------------------------------------------------------------------------
+
+
+
+Solution For Running Out of Inodes
+
+100 % inodes in root directory, how to free inodes?
+
+
+df -i
+
+ the result has 100% or near of IUse% value, then the large number of files is the reason for this issue.
+
+for i in /home/*; do echo $i; find $i | wc -l; done
+
+ rm -rf /home/bad_user/directory_with_lots_of_empty_files
+
+How do you list contents of tar.gz and extract only one file?
+Ans: Use these commands:
+
+tar tf file.tgz
+tar xf file.tgz filename
+
+
+setfacl
+
+setfacl -m u:ram:--- /tmp/test.txt
+
+attibute
+lsattr /etc/passwd
+chattr +i /etc/passwd  ( canot add modify delete) 
+
+aide who modified files using aide 
+
+how many type os files are there in linux?
+
+- normal files
+d directory
+c charecter files
+i link files softlink and hardlink
+S socket file
+B block device files
+P pipe files ( kernel files)
+
+1. Difference between RHCL 6 & RHCL 7?
+2. What is os - Hardening?
+3. what is sticky bit (SUID,SGID,ACL)
+4. What is difference between apache and tomcat
+5. what is tcpdump?
+6. what DRPD ?  DATA REPLICATION
+7. port number FTP,SFTP HTTP,SMTP,Rsync,DHCP,ssh,snmp?
+8. what is cluster? what are its services?
+9. what is kernel compilation?
+10. what is she bang value?
+11. what will you use to view a specific user 3 days back activities? acct, ps acct
+12. If i have 8 core cpu out of which 4 cpu's are in use what will be the load avarage?
+13. what is patching how often it should be done?
+14. differenc /bin and /sbin
+15. what will u see in dev directory?
+16. what is audit log?
+17. 10 tar files are downloaded how can i extrac on tar 
+18. what is multipathing? hwo to do lun mapping? which type of storage you have used in your previous compay?
+19. how samba works? HOw its used for?
+20. explain about symlink and hardlink?
+21. how bonding rhcl 6 /teaming rhcl 7?
+22. what is xinetd and tcpwrapper?
+23. what is grep boot configuration?
+24. difference between tcp and udp?
+25. what is ip routing? HA and load balancers are ussed for?
+26. differennt type of RAIDS? WHAT IS THE BEST RAID to use?
+27. Difference between load avarage and cpu useage?
+28. if a system has crashed and kdumpo file has generated how would you up the system?
+29/ what is inode number? difference between inode and pid?
+30. what type of commands you have used for network?
+31. difference between fdisk and lvm?
+32. how to execute cron job explain about the fields used in it?
+33. when you create a normal user what are files are modifed?
+
+
+----------------------------------------------
+
+
+sftp 
+
+Create a New Group
+
+groupadd sftpusers
+
+Create Users (or Modify Existing User)
+
+# useradd -g sftpusers -d /incoming -s /sbin/nologin guestuser
+# passwd guestuser
+
+usermod -g sftpusers -d /incoming -s /sbin/nologin john
+
+Setup sftp-server Subsystem in sshd_config
+
+# grep sftp /etc/ssh/sshd_config
+#Subsystem      sftp    /usr/libexec/openssh/sftp-server
+Subsystem       sftp    internal-sftp
+
+Specify Chroot Directory for a Group
+
+# tail /etc/ssh/sshd_config
+Match Group sftpusers
+        ChrootDirectory /sftp/%u
+        ForceCommand internal-sftp
+
+Create sftp Home Directory
+
+mkdir /ftp
+mkdir /ftp/guestuser
+mkdir /ftp/guestuser/incoming
+
+Setup Appropriate Permission
+
+chown guestuser:sftpusers /sftp/guestuser/incoming
+
+service sshd restart
+
+
+
+

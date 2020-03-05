@@ -1,0 +1,29 @@
+
+Currently working as a system administrator/DevOps Engineer in Guruinfo Solution Pvt. Ltd
+
+Experience in Implementing Organization build and Release strategy in various environment of Linux and Windows.
+
+hands on Experience in supporting multiple projects during build and release process.
+
+Administration /Maintenance experience of Source Code Management systems, GIT and SVN and CVS
+
+Experience using ANT, Maven as build tools for the building of deployable artifacts from soure code
+
+Experience with CI (Continuous Integration) and CD (Contious Deployment/Delivery) methodologies using Pipe line in jenkins
+
+Experience in development and configuration with software provisioning tools like Docker
+
+Always keep it up Server Healthy and monitoring the server status
+
+Hands of knowledge on Cloud Technologies Like Amazon Web Services (AWS) ECS, EC2,Cloud formation
+
+Experience in troubleshooting the issues in different stages of application life cycle from development to production
+
+Ability to learn new skills quickly
+
+
+
+Technical SKills
+
+
+
