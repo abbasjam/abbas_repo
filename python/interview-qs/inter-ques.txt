@@ -1,0 +1,53 @@
+
+Q: – Explain page in and page out in OS memory management ?
+
+When pages are written to disk, the event is called a page-out, and when pages are returned to physical memory, the event is called a page-in. A page fault occurs when the kernel needs a page, finds it doesn't exist in physical memory because it has been paged-out, and re-reads it in from disk
+
+Q: – How to check the perfromance of NFS server in Linux ?
+
+nfsstat -s
+
+iostat -N	With -N (Uppercase) parameter displays only LVM statistics as shown.
+
+The NFS server display shows the number of NFS calls received (calls) and rejected (badcalls), and the counts and percentages for the various calls that were made. The number and percentage of calls returned by the nfsstat -s command
+
+
+Q: - How to check NFS server's version ?
+
+nfsstat -s	(server side version check)
+
+nfsstat –c 	( Client side version check)
+
+Show all information about all versions (2 , 3 and 4) of NFS.
+
+nfsstat -o all -234
+or
+nfsstat --verbose -234
+
+
+Q: – What is rpc and its role in nfs ?
+
+
+Linux uses a combination of kernel-level support and continuously running daemon processes to provide NFS file sharing, however, NFS support must be enabled in the Linux kernel to function. NFS uses Remote Procedure Calls (RPC) to route requests between clients and servers, meaning that the portmap service must be enabled and active at the proper runlevels for NFS communication to occur. Working with portmap, various other processes ensure that a particular NFS connection is allowed and may proceed without error:
+
+Q: – What is use if sar command and location sar log files.
+
+
+
+Q: – What is use of vmstat and explain its output & log files?
+
+
+
+ 
+vmstat (virtual memory statistics) is a computer system monitoring tool that collects and displays summary information about operating system memory, processes, interrupts, paging and block I/O. Users of vmstat can specify a sampling interval which permits observing system activity in near-real time
+
+
+
+
+Q: – What is Network bonding and how to check status of bonding ?
+
+Q: – What are the steps to configure network bonding in linux ?
+
+Q: – Define the role of Luci and Ricci in redhat cluster suite ?
+
+Q: – What is multipathing and why is it required ?

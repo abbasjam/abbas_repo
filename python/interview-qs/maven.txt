@@ -1,0 +1,25 @@
+Integrate CI builds with other tools such as GitHub, Maven, Tomcat, Java, etc
+
+
+ANT_HOME=/root/ant/apache-ant-1.9.14/bin:$ANT_HOME
+
+
+ 1054  export ANT_HOME=/root/ant/apache-ant-1.9.14
+ 1055  export PATH=${PATH}:${ANT_HOME}/bin
+
+ 1074  export CLASSPATH=/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.9.x86_64/jre/lib:$CLASSPATH
+
+
+
+export ANT_HOME=/root/ant/apache-ant-1.9.14/bin:$ANT_HOME
+
+
+export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.9.x86_64
+
+export M2_HOME=/opt/maven3
+export MAVEN_HOME=/opt/maven3
+export PATH=${M2_HOME}/bin:${PATH}
+
+
+
+mvn archetype:generate -DgroupId=com.javatpoint -DartifactId=CubeGenerator -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false  

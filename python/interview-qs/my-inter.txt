@@ -1,0 +1,29 @@
+1  how to configure bonding in linux? add and remove nic in bonding?
+2. soft mount and hard mount in nfs?
+3. how to do patch in linux?
+4. what is harding in linux?
+5. how to check last installed rpm in linux?
+6. what is dhcp ldap port?
+7. once u create a user he can login but he can not use any command including ls?
+8. Use awk command and print fourth line?
+9. shell scripts if , for syntax
+10. use sed command and change value ?
+11. what is instance type?
+12. what is storage type?
+13. How to copy the file in apache using jenkins?
+14. how to create pipe line using jenkins and deploy war file in tomcat?
+15. how to find out file is exist or not using scripts?
+16. how to check hosts in ansible inventry using adhoc command?
+17. docker valume?
+18. Docker load and save difference?
+19. difference git pull and git fetch?
+20. what is multipath?
+21. how to scan lun?
+22. any proble while update patch?
+23. What is routing?
+24. What is the issue behind getting an error “filesystem is full” while there is space available when you check it through “df” command? How will you rectify this problem?
+
+
+
+ilo status
+
