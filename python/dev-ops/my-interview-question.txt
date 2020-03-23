@@ -1,0 +1,93 @@
+
+what is your role and daily activity?  
+
+how to check hosts in ansible inventry using adhoc command?
+
+how to create pipe line using jenkins and deploy war file in tomcat?
+
+How to copy the file in apache using jenkins?
+
+Difference between load and save command in docker?
+
+HOw to update the patch file using ansible?
+
+i can install package thru scripts and then why using ansible?
+
+HOw to get inventery file from database?
+
+what are the storage classes available in s3?
+
+what is different type of instance? if i want to install redis server what will u suggess?
+
+ARe you using ECS and EKS?
+
+What is vpc? HOw to connect two different subnet? what out vpc what
+
+when using nlb and how to configure?
+
+how to connet two different vpc and explain?
+
+what is cloud formation write simple ec2 instance?
+
+how will monitor aws servers?
+
+how to connect nexus using jenkins?
+
+What is artifactory?
+
+if one docker container is down how will u check?
+
+what is ansible tower? 
+
+mavan life cycle?
+
+what is the difference between install and deploy?
+
+what is the major advantage of maven why you are using maven?
+
+what is disadvantage of docker?
+
+what is harding?
+
+how to connect database in python? explain step by step?
+
+what is lamda function in python?
+
+difference between fetch and pull?
+
+difference between git and svn?
+
+what module used in ansible?
+
+what is ci/cd pipeline? how to configure 3 jobs one another?
+
+what is upstream/downstream?
+
+what is bonding and how to remove one nic ?
+
+how will u configer sftp user?
+
+what is patch in linux? how to do patch file ? what are the issues facing after patch?
+
+difference between merge and rebase?
+
+how to add two volume group?
+
+Explain page in and page out in OS memory management ?
+
+Define the role of Luci and Ricci in redhat cluster suite ?
+
+What is multipathing and why is it required ?
+
+how to check new mounted lun?
+
+in LVM what is the difference L and l?
+
+
+
+
+
+
+
+
+

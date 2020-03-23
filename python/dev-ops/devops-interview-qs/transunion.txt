@@ -1,0 +1,12 @@
+Tell about your self
+tell your daily activities 
+how edit ansible vault file.
+pipe line concept.
+multi branch pipeline
+shell script
+nexus repositarty
+docker.
+what are the modules used in ansible
+latest script
+if deployment file correupted what is the solution
+how to get the 10 hosts uptime through ansible adhoc command.

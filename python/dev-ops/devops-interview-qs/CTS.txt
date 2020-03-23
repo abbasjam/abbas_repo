@@ -1,0 +1,28 @@
+1. if i created 10 jobs jenkins , where it will be created?
+2.what is the use of target folder.?
+3.what is the use of plugin folder?
+4.if i want change defult path, how to change?
+5.how to connect master to slave.
+6.what u will storing in guihub?
+7.what is gitfetch?
+8.what is gitfull?
+9.what is staging area in git?
+10.what is local area in git?
+11.how to check the URL in git?
+11.what is git remote
+12.what is git reset ?
+13.what is git revert?
+14.what is git merge?
+15.what is git rebase?
+16.what u did your project in Docker
+17.what type of command will be used in Docker.
+18, RUN,CMD,ENTRYPOINT command in docker.
+19. if i want run script in container how to run?
+20. i want restrict user, set of commands to run particular user?
+21. if i want install softwares in container , what command you will refer.
+22.$@ command in linux ?
+23. what is shebang line?
+
+
+
+

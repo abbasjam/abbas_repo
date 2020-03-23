@@ -1,0 +1,50 @@
+
+import xlsxwriter
+
+workbook = xlsxwriter.Workbook('write_list.xlsx')
+worksheet = workbook.add_worksheet()
+
+my_list = [[1, 1, 1, 1, 1],
+           [2, 2, 2, 2, 1],
+           [3, 3, 3, 3, 1],
+           [4, 4, 4, 4, 1],
+           [5, 5, 5, 5, 1]]
+
+for row_num, row_data in enumerate(my_list):
+    for col_num, col_data in enumerate(row_data):
+        worksheet.write(row_num, col_num, col_data)
+
+workbook.close()
+
+
+----------
+
+import xlsxwriter
+workbook = xlsxwriter.Workbook('write_dict.xlsx')
+worksheet = workbook.add_worksheet()
+
+
+https://stackoverflow.com/questions/32463667/write-list-of-nested-dictionaries-to-excel-file-in-python
+
+
+items = {}
+items = {{'item_1': {'posts':1, 'edits':0, 'views':2345}
+         {'item_2': {'posts':2, 'edits':8, 'views':330649}}
+This way you can simply refer to items['item_2']['edits'] (which should yield 8) or items['item_1']['views'] (which should yield 2345), etc.
+
+In your case, then something like:
+
+# write the headers -- this could be refined
+row = 0
+worksheet.write(0, 1, 'posts')
+worksheet.write(0, 2, 'edits')
+worksheet.write(0, 3, 'views')
+
+# write the data:
+for itm in items:
+    row += 1
+    worksheet.write(row, 0, itm)
+    for col, prop in enmumerate(items[itm]):
+        worksheet.write(row, col+1, prop)
+
+

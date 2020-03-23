@@ -1,0 +1,15 @@
+http://clusterfrak.com/devops/git/git_cvs2git/
+
+
+http://www.gromacs.org/Developer_Zone/Git/Migrating_a_CVS_repository_to_GIT
+
+
+https://sachinsharm.wordpress.com/2013/10/04/installsetup-and-configure-git-server-with-gitolite-and-gitweb-on-centosrhel-6-4/
+
+https://www.linux.com/learn/how-run-your-own-git-server
+
+
+http://www.techknowlogy.in/linux/git-server/
+
+
+http://profantasycricket.com/england-vs-australia-3rd-odi-dream11-fantasy-cricket-preview/

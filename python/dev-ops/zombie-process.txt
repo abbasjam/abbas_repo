@@ -1,0 +1,59 @@
+dd if = /dev/sda of = /dev/sdb
+
+
+dd if = /dev/sda of = /dev/sdb conv=noerror, sync
+
+
+To backup a Partition
+
+ dd if=/dev/hda1 of=~/partition.img
+
+To create an image of a Hard Disk
+
+ dd if = /dev/hda of = ~/hdadisk.img
+
+To restore using the Hard Disk Image
+
+ dd if = hdadisk.img of = /dev/hdb
+
+-----------------------------------------
+
+increase swap space using file
+
+First check swap space using below command
+
+free -m
+
+swapon -s
+
+Create a swap file of size 1 GB using below dd Command
+
+dd if=/dev/zero of=/swap_file bs=1G count=1
+
+chmod 600 /swap_file
+
+mkswap /swap_file
+
+swapon /swap_file
+
+------------------
+
+Killing Zombie Processes
+
+kill -s SIGCHLD pid
+In the above command, the pid is the process ID of the parent process.
+
+how to find Zombie Processes? 
+
+ps aux | grep Z
+
+
+
+
+
+
+
+
+
+
+

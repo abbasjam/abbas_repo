@@ -1,0 +1,110 @@
+https://serverfault.com/questions/823058/how-to-set-up-two-default-routes-in-linux
+
+
+echo "1 admin" >> /etc/iproute2/rt_tables
+echo "2 users" >> /etc/iproute2/rt_tables
+
+ip rule add from 192.168.122.40/32 dev eth0 table admin
+ip rule add from 192.168.123.41/32 dev eth1 table users
+
+ip route add default via 192.168.122.1 dev eth0 table admin
+ip route add default via 192.168.123.1 dev eth1 table users
+
+------------------------------------------------
+ 
+https://dba.stackexchange.com/questions/14305/how-to-log-verbose-output-from-mysqldump
+
+mysqldump -v -u root mysql > /dev/null 2> output.log
+
+
+https://www.linuxquestions.org/questions/programming-9/mysqldump-errors-4175429922/
+
+
+----------------------------------------------------------------------------------------------
+
+	  ip route add $P1_NET dev $IF1 src $IP1 table T1
+	  ip route add default via $P1 table T1
+	  ip route add $P2_NET dev $IF2 src $IP2 table T2
+	  ip route add default via $P2 table T2
+
+
+
+ ip route add $P1_NET dev $IF1 src $IP1
+	    ip route add $P2_NET dev $IF2 src $IP2
+
+
+		ip route add default via $P1
+
+ip rule add from $IP1 table T1
+	    ip rule add from $IP2 table T2
+
+
+
+ip route add $P0_NET     dev $IF0 table T1
+ip route add $P2_NET     dev $IF2 table T1
+ip route add 127.0.0.0/8 dev lo   table T1
+ip route add $P0_NET     dev $IF0 table T2
+ip route add $P1_NET     dev $IF1 table T2
+ip route add 127.0.0.0/8 dev lo   table T2
+
+-------------------------------------------------------------------------------------------------------
+
+1 admin
+2 users
+100 myfavgw
+101 myanotgw
+
+
+
+ip route add 10.10.70.0/24 dev eth0 src 10.10.70.38 table admin
+ip route add default via 10.10.70.254 dev eth0 table admin
+
+------------------------------------------------------------------------
+ip route add 10.0.0.0/24 dev eth1 src 10.0.0.254 table users
+ip route add default via 10.0.0.1 dev eth1 table users
+
+ip rule show
+
+ip rule add from 10.0.0.254/24 table users
+ip rule add to 10.0.0.254/24 table users
+-----------------------------------------------------------------------
+ip route add 192.168.2.0/24 dev eth0 src 192.168.2.214 table admin
+ip route add default via 192.168.1.100 dev eth0 table admin
+
+ip rule show
+
+ip rule add from 192.168.2.214/24 table admin
+ip rule add to 192.168.2.214/24 table admin
+
+-----------------------------------------------------------------------
+
+default via 192.168.1.100 dev eth0  metric 100 
+default via 192.168.178.1 dev wlan1  metric 101 
+default via 192.168.178.1 dev wlan0  metric 102 
+192.168.178.0/24 dev wlan0  proto kernel  scope link  src 192.168.178.97 
+192.168.178.0/24 dev eth0  proto kernel  scope link  src 192.168.178.99 
+192.168.178.0/24 dev wlan1  proto kernel  scope link  src 192.168.178.98
+
+----------------------------------------------------------------------------------
+ ip route show
+ ip route add default via 10.0.0.1 dev eth1 metric 100
+ ip route add default via 192.168.1.100 dev eth0 metric 101
+
+
+route add -net 0.0.0.0 netmask 0.0.0.0 gw 10.0.0.1 metric 1
+route add -net 0.0.0.0 netmask 0.0.0.0 gw 192.168.1.100 metric 10
+
+
+route add -net 10.0.0.0 netmask 255.255.255.0 gw 10.0.0.1 metric 1
+route add -net 192.168.0.0 netmask 255.255.255.0 gw 192.168.1.100 metric 1
+
+
+route add -net 192.168.0.0 netmask 255.255.255.0 gw 192.168.1.100 metric 10
+route add -net 10.0.0.0 netmask 255.255.255.0 gw 10.0.0.1 metric 10
+
+
+
+
+
+
+

@@ -1,0 +1,27 @@
+1.what are linux flavers you worked.
+2.which are kernal you have expereinced
+3.what file system you have normally used in linux enviroment.
+4.what application server and web server used in your project.
+5.diffrence b/w applicatio and web server.
+6.how web application will work? what are the stpes will perform.
+7.what is load balancer and how to work.
+8 what are the database servers using in your environment.
+9. do you have write any query in RDS?
+10.what are task you have peformed in build operations?
+11. what is pipeline projects ..
+12. have you done branch merge.
+13. what are the services you know in AWS?
+14.what is VPC?
+15.what is subnet?
+16.what is load balancer in AWS?
+17.what is cloud formation
+18.what are the OS will be suopport in EC2 and what OS you have used?
+19.how to do appilcation monitoring and what type used.
+20.how zabbix will work?
+21.what are the infra will monitor.
+22. how to secure application in AWS.
+
+
+
+
+

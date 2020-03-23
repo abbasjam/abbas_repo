@@ -1,0 +1,13 @@
+ps aux | grep 'httpd' | awk '{print $6/1024;}' | awk '{avg += ($1 - avg) / NR;} END {print avg " MB";}'
+
+apache connection count
+
+netstat -alntp | grep :80 | wc -l
+
+mysql connection count
+
+ netstat -antp | grep :3306 | wc -l
+
+count connection Stat, Listen, Established, Foreign
+
+ netstat -ant | awk '{print $6}' | sort | uniq -c | sort -n

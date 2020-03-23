@@ -1,0 +1,44 @@
+curl -Is https://firebase.google.com/docs/cloud-messaging/http-server-ref | head -1
+
+curl -Is https://api.sendgrid.com/api/profile.get.json | head -1
+
+curl -Is http://hpsms.dial4sms.com/api/web2sms.php | head -1
+
+
+
+while read url
+do
+    urlstatus=$(curl -o /dev/null --silent --head --write-out '%{http_code}' "$url" )
+    echo "$url  $urlstatus" >> urlstatus.txt
+done < $1
+
+ nc -zw3 192.168.1.103 2025 && echo "opened" || echo "closed"  >> urlstatus.txt
+
+ nc -zw3 smtp.bizmail.yahoo.com 465 && echo "opened" || echo "closed" >> urlstatus.txt
+
+vi urls.txt
+
+https://firebase.google.com/docs/cloud-messaging/http-server-ref
+https://api.sendgrid.com/api/profile.get.json
+http://hpsms.dial4sms.com/api/web2sms.php
+
+
+
+# ./checkurls.sh urls.txt
+
+
+---------------------------------------------------------------------------------------------------------------
+
+9842145300 mu
+
+2025
+
+465
+
+
+
+https://www.hdfcbanksmartapply.com/personal-loan/compare-interest-rates.html?WT.mc_id=P16_PL_AppOnl_P16_PL_Search_Brand%20Cor(PL)-Exact_HDFCPersonalLoanLongTail_hdfc%20personal%20loan&_ga=1.187553448.109463061.1469512872
+
+
+curl -d 'to==mohamed.abbas@guruinfo.co.in&amp;toname=Abbas&amp;subject=Example Subject&amp;text=testingtextbody&amp;from=info@propguru.biz&amp;api_user=propguru&amp;api_key=Propguru@789' https://api.sendgrid.com/api/	
+

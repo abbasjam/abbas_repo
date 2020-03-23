@@ -1,0 +1,50 @@
+
+----------  find file  --------------------------
+
+IFS="$(printf '\n\t')"   # Remove space.
+
+#  Correct glob use:
+#  Always use for-loop, prefix glob, check if exists file.
+for file in ./* ; do         # Use ./* ... NEVER bare *
+  if [ -e "$file" ] ; then   # Check whether file exists.
+     echo " "$file" ... found"
+  fi
+done
+
+
+
+while 
+
+
+#!/bin/sh
+INPUT_STRING=hello
+while [ "$INPUT_STRING" != "bye" ]
+do
+  echo "Please type something in (bye to quit)"
+  read INPUT_STRING
+  echo "You typed: $INPUT_STRING"
+done
+
+
+
+for command
+
+#!/bin/sh
+for i in hello 1 * 2 goodbye 
+do
+  echo "Looping ... i is set to $i"
+done
+
+--output
+
+Looping ... i is set to hello
+Looping ... i is set to 1
+Looping ... i is set to (name of first file in current directory)
+    ... etc ...
+Looping ... i is set to (name of last file in current directory)
+Looping ... i is set to 2
+Looping ... i is set to goodbye
+
+
+
+	

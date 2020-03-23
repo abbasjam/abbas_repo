@@ -1,0 +1,23 @@
+
+
+cvs -d :pserver:abbas@192.168.3.23:/var/cvs login
+cvs co -r Amarprakash_v1  ErpProduct
+
+
+mkdir erp_testing
+cd erp_testing/
+history
+cvs co -r test2 erp_testing
+clear
+ls
+cd erp_testing/
+ls
+cd ..
+ls
+cvs tag  -b test44444
+clear
+ls
+cd ..
+ls
+rm -rf erp_testing/
+cvs tag  -b asquare_erp

@@ -1,0 +1,92 @@
+1.tell about your self and day to day activities.
+2.what is the use of Branch.
+3.when Branch success what you will do.
+4.maven script extension
+5.maven steps and how to avoid 2 steps in maven
+6.what is nexus and how to confiure
+7.tell about step step prodedure for integarte nexus with jenkins.
+8.what s3 storage
+9.what is the use of Docker.
+10.what is ansible role
+11.if i dont want template module what is the alternate solution in ansible.
+
+
+cts
+
+1. if i created 10 jobs jenkins , where it will be created?
+2.what is the use of target folder.?
+3.what is the use of plugin folder?
+4.if i want change defult path, how to change?
+5.how to connect master to slave.
+6.what u will storing in guihub?
+7.what is gitfetch?
+8.what is gitfull?
+9.what is staging area in git?
+10.what is local area in git?
+11.how to check the URL in git?
+11.what is git remote
+12.what is git reset ?
+13.what is git revert?
+14.what is git merge?
+15.what is git rebase?
+16.what u did your project in Docker
+17.what type of command will be used in Docker.
+18, RUN,CMD,ENTRYPOINT command in docker.
+19. if i want run script in container how to run?
+20. i want restrict user, set of commands to run particular user?
+21. if i want install softwares in container , what command you will refer.
+22.$@ command in linux ?
+23. what is shebang line?
+
+
+MIS
+
+1.what are linux flavers you worked.
+2.which are kernal you have expereinced
+3.what file system you have normally used in linux enviroment.
+4.what application server and web server used in your project.
+5.diffrence b/w applicatio and web server.
+6.how web application will work? what are the stpes will perform.
+7.what is load balancer and how to work.
+8 what are the database servers using in your environment.
+9. do you have write any query in RDS?
+10.what are task you have peformed in build operations?
+11. what is pipeline projects ..
+12. have you done branch merge.
+13. what are the services you know in AWS?
+14.what is VPC?
+15.what is subnet?
+16.what is load balancer in AWS?
+17.what is cloud formation
+18.what are the OS will be suopport in EC2 and what OS you have used?
+19.how to do appilcation monitoring and what type used.
+20.how zabbix will work?
+21.what are the infra will monitor.
+22. how to secure application in AWS.
+
+
+Tell about your self
+tell your daily activities 
+how edit ansible vault file.
+pipe line concept.
+multi branch pipeline
+shell script
+nexus repositarty
+docker.
+what are the modules used in ansible
+latest script
+if deployment file correupted what is the solution
+how to get the 10 hosts uptime through ansible adhoc command.
+
+
+
+1. what u do in dxc as a devops engineer .
+2 R u used to created CI/CD pipe line
+3.what kind of job will be there in CI
+4.what kind of pipeline you will create
+5.when u will create free style jobs.
+6.what are all the jobs we need effective for CICD.
+7 how CICD configured in your environment .
+8.how code coverage will happening in your environment .
+9.what is the configuration for docker server..
+10. what kind of job you will do GIT hub?

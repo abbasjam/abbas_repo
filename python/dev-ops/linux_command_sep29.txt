@@ -1,0 +1,21 @@
+10. Run Same Command on Multiple Linux Servers
+Recently one of our readers asked in our LinuxSay forum, how to execute single command to multiple Linux boxes at once using SSH. He had his machines IP addresses looking like this:
+
+10.0.0.1
+10.0.0.2
+10.0.0.3
+10.0.0.4
+10.0.0.5
+So here is a simple solution of this issue. Collect the IP addresses of the servers in a one file called list.txt one under other just as shown above. Then you can run:
+
+# for in $i(cat list.txt); do ssh user@$i 'bash command'; done
+In the above example you will need to change “user” with the actual user with which you will be logging and “bash command” with the actual bash command you wish to execute. The method is better working when you are using passwordless authentication with SSH key to your machines as that way you will not need to enter the password for your user over and over again.  
+
+
+9. Deleting Larger Files
+Sometimes files can grow extremely large. I have seen cases where a single log file went over 250 GB large due to poor administrating skills. Removing the file with rm utility might not be sufficient in such cases due to the fact that there is extremely large amount of data that needs to be removed. The operation will be a “heavy” one and should be avoided. Instead, you can go with a really simple solution:
+
+# > /path-to-file/huge_file.log
+Where of course you will need to change the path and the file names with the exact ones to match your case. The above command will simply write an empty output to the file. In more simpler words it will empty the file without causing high I/O on your system.
+
+

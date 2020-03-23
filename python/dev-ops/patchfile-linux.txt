@@ -1,0 +1,101 @@
+https://www.thegeekstuff.com/2014/12/patch-command-examples/
+
+hello.c
+
+#include <stdio.h> 
+
+int main() {
+printf("Hello World\n");
+}
+
+hello_new.c
+
+#include <stdio.h>
+
+int main(int argc, char *argv[]) {
+printf("Hello World\n");
+return 0;
+}
+
+
+
+diff -u hello.c hello_new.c > hello.patch
+
+
+The above command will create a patch file named “hello.patch”.
+
+--- hello.c	2014-10-07 18:17:49.000000000 +0530
++++ hello_new.c	2014-10-07 18:17:54.000000000 +0530
+@@ -1,5 +1,6 @@
+ #include <stdio.h>
+ 
+-int main() {
++int main(int argc, char *argv[]) {
+ 	printf("Hello World\n");
++	return 0;
+ }
+
+
+
+$ patch < hello.patch
+patching file hello.c
+
+
+ Create a Patch From a Source Tree
+
+tar -xvzf openvpn-2.3.2.tar.gz
+
+tar -xvzf openvpn-2.3.4.tar.gz
+
+
+diff -Naur /usr/src/openvpn-2.3.2 /usr/src/openvpn-2.3.4 > openvpn.patch
+
+
+4. Apply Patch File to a Source Code Tree
+The following patch commands can be used to apply the patch to source tree.
+
+# patch -p3 < /root/openvpn.patch
+patching file openvpn-2.3.2/aclocal.m4
+patching file openvpn-2.3.2/build/Makefile.in
+patching file openvpn-2.3.2/build/msvc/Makefile.in
+
+
+Please note that we are executing the command from /usr/src/. The patch file contains all the filenames in absolute path format( from root ). So when we execute from /usr/src, without the “-p” option, it will not work properly.
+
+-p3 tells the patch command to skip 3 leading slashes from the filenames present in the patch file. In our case, the filename in patch file is “/usr/src/openvpn-2.3.2/aclocal.m4”, since you have given “-p3”, 3 leading slashes, i.e. until /usr/src/ is ignored.
+
+
+5. Take a Backup before Applying the Patch using -b
+You can take a backup of the original file before applying the patch command using the -b option as shown below.
+
+$ patch -b < hello.patch
+patching file hello.c
+Now you will have a file name “hello.c.orig”, which is the backup of the original hello.c.
+
+You can also use -V to decide the backup filename format as shown below. Now you will have a file name “hello.c.~1~”.
+
+$ patch -b -V numbered < hello.patch
+patching file hello.c
+
+6. Validate the Patch without Applying (Dry-run Patch File)
+You can dry run the patch command to see if you are getting any errors, without patching the file using –dry-run option as shown below.
+
+$ patch --dry-run < hello.patch
+patching file hello.c
+You can see that hello.c is not modified at all.
+
+7. Reverse a Patch that is Already Applied (Undo a Patch)
+You can use the -R option to reverse a patch which is applied already.
+
+$ patch < hello.patch
+patching file hello.c
+
+$ ls -l hello.c
+-rw-r--r-- 1 lakshmanan users  94 2014-10-07 20:05 hello.c
+
+$ patch -R < hello.patch
+patching file hello.c
+
+$ ls -l hello.c
+-rw-r--r-- 1 lakshmanan users  62 2014-10-07 20:04 hello.c
+

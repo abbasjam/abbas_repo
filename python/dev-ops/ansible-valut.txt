@@ -1,0 +1,39 @@
+https://www.decodingdevops.com/ansible-vault-tutorial/
+
+Ansible valut
+
+1.Crate new encript files
+
+	ansible-vault  	create   abc.yaml
+
+2. Encrypting Existing Files
+
+	ansible-vault encrypt abc.yaml
+
+3. Display (view) the content of encrypted files
+
+	ansible-vault view abc.yml
+
+4. Editing Encrypted files
+
+	ansible-vault edit abc.yml
+
+5. Decrypt the encrypted files
+
+	ansible-vault decrypt abc.yml
+
+6. Change the password of Encrypted files
+
+	ansible-vault rekey abc.yml
+
+7. Run the encrypted playbooks
+	
+	ansible-playbook abc.yml --ask-vault-pass
+
+	ansible-playbook abc.yml --vault-password-file /path/to/vault_password.txt
+
+
+
+
+
+

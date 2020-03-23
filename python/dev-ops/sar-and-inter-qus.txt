@@ -1,0 +1,50 @@
+6) What are the tools that help to find bugs or perform static analysis?
+
+PyChecker is a static analysis tool that detects the bugs in Python source code and warns about the style and complexity of the bug. Pylint is another tool that verifies whether the module meets the coding standard.
+
+5) How memory is managed in Python?
+
+Python memory is managed by Python private heap space. All Python objects and data structures are located in a private heap. The programmer does not have an access to this private heap and interpreter takes care of this Python private heap.
+The allocation of Python heap space for Python objects is done by Python memory manager. The core API gives access to some tools for the programmer to code.
+Python also have an inbuilt garbage collector, which recycle all the unused memory and frees the memory and makes it available to the heap space.
+
+
+https://www.thegeekstuff.com/2011/03/sar-examples/
+
+https://github.com/leereilly/hello-world-java.git
+
+
+
+Q: – How to check NFS server's version ?
+
+nfsstat -s  for server side version
+nfsstat -c  for client side version
+
+
+
+Q: – What is the main difference between root_sqush and no_root_squash in NFS ?
+
+
+
+Q: – What is rpc and its role in nfs ?
+
+Linux uses a combination of kernel-level support and continuously running daemon processes to provide NFS file sharing, however, NFS support must be enabled in the Linux kernel to function. NFS uses Remote Procedure Calls (RPC) to route requests between clients and servers, meaning that the portmap service must be enabled and active at the proper runlevels for NFS communication to occur. Working with portmap, various other processes ensure that a particular NFS connection is allowed and may proceed without error:
+
+
+Q: – What is use if sar command and location sar log files.
+
+Q: – What is use of vmstat and explain its output & log files?
+
+Q: – What is Network bonding and how to check status of bonding ?
+
+Q: – What are the steps to configure network bonding in linux ?
+
+Q: – Define the role of Luci and Ricci in redhat cluster suite ?
+
+Q: – What is multipathing and why is it required ?
+
+Q: – what is iostat , describe its output and log files ?
+
+Q: – What is the difference of 2.4 and 2.6 kernel ?
+
+Q: – What are difference between ext3 and ext4

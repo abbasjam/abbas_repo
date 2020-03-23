@@ -1,0 +1,22 @@
+vagrant
+ansible
+phython
+docker
+jenkins
+zabbix
+aws
+git
+
+
+echo "# abbas_repo" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/abbasjam/abbas_repo.git
+git push -u origin master
+
+
+
+jenkins ci/cd examples
+
+https://dzone.com/articles/learn-how-to-setup-a-cicd-pipeline-from-scratch

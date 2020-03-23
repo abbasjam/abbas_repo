@@ -1,0 +1,11 @@
+1.tell about your self and day to day activities.
+2.what is the use of Branch.
+3.when Branch success what you will do.
+4.maven script extension
+5.maven steps and how to avoid 2 steps in maven
+6.what is nexus and how to confiure
+7.tell about step step prodedure for integarte nexus with jenkins.
+8.what s3 storage
+9.what is the use of Docker.
+10.what is ansible role
+11.if i dont want template module what is the alternate solution in ansible.

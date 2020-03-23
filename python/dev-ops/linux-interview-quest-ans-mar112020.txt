@@ -1,0 +1,325 @@
+1. create bonding channel 
+
+[root @server ~]# vi /etc/sysconfig/network-scripts/ifcfg-bond0
+
+DEVICE=bond0
+IPADDR=192.168.2.1
+NETMASK=255.255.255.0
+ONBOOT=yes
+BOOTPROTO=none
+USERCTL=no
+
+
+2. modify eth0 and eth1 
+
+DEVICE=eth0
+USERCTL=no
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+BOOTPROTO=none
+
+
+DEVICE=eth1
+USERCTL=no
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+BOOTPROTO=none
+
+3. load bond driver/module
+
+[root @server ~]# vi /etc/modprobe.conf.
+
+alias bond0 bonding
+options bond0 mode=balance-alb miimon=100
+
+4. Test connection
+
+[root @server ~]# modprobe bonding
+
+
+[root @server ~]# service network restart
+
+# cat /proc/net/bonding/bond0
+
+
+mode=0 (Balance Round Robin)
+mode=1 (Active backup)
+mode=2 (Balance XOR)
+mode=3 (Broadcast)
+mode=4 (802.3ad)
+mode=5 (Balance TLB) Transmit Load Balancing
+mode=6 (Balance ALB) Adaptive Load Balancing
+
+
+Mode 0 (balance-rr)
+This mode transmits packets in a sequential order from the first available slave through the last. If two real interfaces are slaves in the bond and two packets arrive destined out of the bonded interface the first will be transmitted on the first slave and the second frame will be transmitted on the second slave. The third packet will be sent on the first and so on. This provides load balancing and fault tolerance.
+
+
+Mode 1 (active-backup)
+Mode 1 places one of the interfaces into a backup state and will only make it active if the link is lost by the active interface. Only one slave in the bond is active at an instance of time. A different slave becomes active only when the active slave fails. This mode provides fault tolerance.
+
+Mode 2 (balance-xor)
+In a balance XOR bond mode the bond will evaluate the source and destination mac addresses to determine which interface to send the network packets out. This method will pick the same interface for a given mac address and as a result is capable of load balancing and fault tolerance
+
+Mode 3 (broadcast)
+In this method the bond device will transmit data out all slave interfaces hence the ‘broadcast‘ name of this particular bonding method. There are very few uses for this method but it does provide a level of fault tolerance
+
+Mode 4 (802.3ad)
+The 802.3ad mode is known as Dynamic Link Aggregation mode. It creates aggregation groups that share the same speed and duplex settings. This mode requires a switch that supports IEEE 802.3ad Dynamic link. Slave selection for outgoing traffic is done according to the transmit hash policy, which may be changed from the default simple XOR policy via the xmit_hash_policy option. Note that not all transmit policies may be 802.3ad compliant, particularly in regards to the packet mis-ordering requirements of section 43.2.4 of the 802.3ad standard. Differing peer implementations will have varying tolerances for noncompliance.
+
+Mode 5 (balance-tlb)
+In TLB the bond will receive traffic on the slave interfaces as normal but when the system needs to send traffic, it will determine which interface is the best to transmit data on based upon the load/queue for each of the interfaces.
+
+Mode 6 (balance-alb)
+This is Adaptive load balancing mode. This includes balance-tlb + receive load balancing (rlb) for IPV4 traffic. The receive load balancing is achieved by ARP negotiation. The bonding driver intercepts the ARP Replies sent by the server on their way out and overwrites the src hw address with the unique hw address of one of the slaves in the bond such that different clients use different hw addresses for the server.
+
+
+
+---------------------------------------------------------------
+
+
+LVM
+
+Creating Physical Volumes
+
+
+# pvcreate /dev/sda1 /dev/sdb1 /dev/sdc1
+
+
+Creat volume group
+
+vgcreate -s 32M tecmint_add_vg /dev/sda1 /dev/sdb1 /dev/sdc1
+
+
+Create Logical Volume
+
+# lvcreate -l 575 -n tecmint_documents tecmint_add_vg
+
+# lvcreate -l 575 -n tecmint_manager tecmint_add_vg
+
+# lvcreate -l 575 -n tecmint_public tecmint_add_vg
+
+-l – Creating using Extent Size
+-n – Give a Logical Volume name.
+
+Method 2: Creating Logical Volumes using GB Size’s
+
+# lvcreate -L 18G -n tecmint_documents tecmint_add_vg
+
+# lvcreate -L 18G -n tecmint_manager tecmint_add_vg
+
+# lvcreate -L 18G -n tecmint_public tecmint_add_vg
+
+# lvcreate -L 17.8G -n tecmint_public tecmint_add_vg
+
+
+Creating File System
+
+
+12. For using the logical volumes we need to format. Here I am using ext4 file-system to create the volumes and going to mount under /mnt/.
+
+# mkfs.ext4 /dev/tecmint_add_vg/tecmint_documents
+
+# mkfs.ext4 /dev/tecmint_add_vg/tecmint_public
+
+# mkfs.ext4 /dev/tecmint_add_vg/tecmint_manager
+
+
+13. Let us Create Directories in /mnt and Mount the Logical volumes what we have created file-system.
+
+# mount /dev/tecmint_add_vg/tecmint_documents /mnt/tecmint_documents/
+
+# mount /dev/tecmint_add_vg/tecmint_public /mnt/tecmint_public/
+
+# mount /dev/tecmint_add_vg/tecmint_manager /mnt/tecmint_manager/
+
+What is LVM?
+LVM is a method of allocating hard drive space into logical volumes that can be easily resized instead of partitions. With LVM the hard drives (or) set of hard drives are allocated to one or more physical volumes (PVs). The physical volumes are combined into volume group (VGs). Each volume group is divided into logical volumes (LVs) on which the file system and mount point are created.
+
+What is the difference between LVM & RAID?
+RAID provides redundancy but LVM doesn’t provide redundancy.
+
+What is the difference between LVM1 & LVM2?
+LVM1 and LVM2 are the two version of LVM
+
+LVM2 uses device mapper driver contained in 2.6 kernel version.
+
+LVM1 was included in the 2.4 series kernels.
+
+What is volume group (VG)?
+The volume group is the highest level abstraction used within the LVM. It gathers to gather a collection of logical volumes and physical volumes into one administrative unit.
+
+How to scan the new LUN or disk for LVM physical volume?
+Use “pvscan” to scan existing physical volume from newly connected SAN or DISKS.
+
+How to scan disks for existing volume group?
+Use “vgscan” to scan existing volume group from newly connected SAN or DISKS. But you should use “pvscan” prior to executing this command.
+
+How to scan logical volume from existing volume group
+Use “lvscan”
+
+How to stop the logical volume? Or deactivate the logical volume?
+# Lvchange –an /dev/vg_name/lv_name
+
+How to activate the logical volume which in deactivated state?
+# Lvchange –ay /dev/vg_name/lv_name
+
+How do disable the volume group? Or deactivate the volume group?
+# Vgchange –an /dev/vg_name/lv_name
+
+How to enable the volume group? Or activate the volume group?
+# Vgchange –ay /dev/vg_name/lv_name
+
+How to list imported volume groups?
+Use “vgs” command to display the imported volume group.
+
+How to list the available logical volume on the system?
+Use “lvs” command to list the available logical volumes on the system.
+
+How to list available physical volume in LVM?
+Use “pvs” command to list the available physical volumes
+
+How to see the detailed volume group information?
+Use “vgdisplay vg_name”
+
+How to see the detailed logical volume information?
+Use “lvdisplay /dev/vg_name/lv_name”
+
+How to see the detailed physical volume information?
+Use “pvdisplay /dev/disk name” Ex: pvdisplay /dev/sda10
+
+How to rename volume group? Can we rename the VG on fly?
+Yes, it’s possible to rename the volume group on fly. But the mounted volume will not reflect the same unless you re-mount the volume with new VG name.
+
+Syntax- vgrename old_vg_name new_vg_name
+
+How to rename logical volume? Can we rename the LV on fly?
+Yes, it’s possible to rename the logical volume on fly. But the mounted logical volume will not reflect the same unless you re-mount with new LV name.
+
+Syntax- lvrename vg_name old_lv_name new_lv_name
+
+What is the maximum size of a single LV?
+For 2.4 based kernels, the maximum LV size is 2TB.
+
+For 32-bit CPUs on 2.6 kernels, the maximum LV size is 16TB.
+
+For 64-bit CPUs on 2.6 kernels, the maximum LV size is 8EB.
+
+What is physical extent (PE)?
+Within a volume group, the disk space available for allocation is divided into unit of a fixed size called extents. An extent is the smallest unit space that can be allocated. Within a physical volume, extents are referred to as physical extents.
+
+What is logical extent (LE)?
+Each logical volume is split into chunks of data, know as logical extents. The extent size is same for all the logical volumes in the volume group. A logical volume is allocated into logical extents of the same size as the physical extents. The extent size is thus the same for all logical volumes in the volume group. The volume group maps the logical extents to physical extents.
+
+Brief about physical extent (PE)?
+A volume group is nothing but a large pool of disk space created from all the physical disks. LVM is capable of doing operation such as increasing, decreasing the size of a logical volume because the physical volume is made up of small chunks which are always of fixed size. Each physical disk that combined makes up a volume group will have a number of small chunks of equal size, where data will reside. This small chunk of equal size, which makes up the physical volumes are called physical extents. A physical extent in a chunk of disk space can be any size, but default to 4MB. Creating a volume group simply combines all the physical extents of all the physical volumes to form one large logical volume group. Each physical volume is divided chunks of data; know as physical extents, these extents have the same size as the logical extents for the volume group.
+
+LVM logical volume types?
+In LVM, a volume group is divided up into logical volumes. There are three kinds of logical volumes in LVM those are
+
+Linear volumes
+Stripped volumes
+Mirrored volumes
+
+
+Linear logical volumes
+Linear logical volumes are nothing but a logical volume made by simply combining multiple physical volumes to one.
+
+Stripped logical volumes
+One of the major strength of logical volumes made out of LVM is that, you can in fact control the way data is structured across the underlying physical disks. Let see how data is structured when we configure stripped logical volume. Stripped logical volume is very much similar to RAID level 0. In stripped logical volume, data in the underlying physical volume is stripped across the number of physical disks. Similar to RAID level 0 which employs stripping across the disks, a logical volume with stripping will improve both sequential read and writes.
+
+Mirrored logical volume
+Mirrored logical volumes are very much similar to RAID level 1 in which data is mirrored across the number of disks used. It provides better redundancy for the data. In easy words, you can say that an exact replica copy of one physical disk is present on the other physical disk. While creating logical volume with mirrors, you can give multiple mirrors for the data. Mirroring of a logical volume requires at least three physical volumes.
+
+The first physical volume will act as the first mirror leg
+The second physical volume will act as the second mirror leg
+The third physical volume will be saving logs related to the mirroring
+
+Is it possible to increase the logical volume on fly
+Yes. We can increase the logical volume without un-mount it. Here are the steps to increase the logical volume.
+
+Increase the size of logical volume /home using lvresize. Ex- lvresize –L 20G /dev/VG_NAME/LV_NAME
+Confirm new size of LV using lvdisplay
+Increase the file system size of /home using resize2fs. Ex- resize2fs –f /dev/VG_NAME/LV_NAME
+
+How to reduce the logical volume? Is it possible to reduce on fly?
+No. we can’t reduce the logical volume on fly. Here are the steps to reduce the logical volume
+
+Umount the Filesystem. Ex- umount /home
+Check the Filesystem for error using e2fsck. Ex- e2fsck –f /dev/VG_NMAE/LV_NAME
+N: B- Here in the e2fsck command, we are using “-f” option to forcefully check the Filesystem.
+
+Reduce the Filesystem. Shrink the size of /home using resize2fs. Ex- resize2fs /dev/VG_NAME/LV_NAME 10G
+Reduce the logical volume size using lvreduce. Ex- lvreduce –L 10G /dev/VG_NAME/LV_NAME
+Mount the Filesystem and verify the size. Ex- mount /home && df –h /home
+
+How you will check on you server or system device-mapper is installed on not?
+Check the following file.
+
+#cat /proc/misc
+
+What are the steps to create LVM?
+Create physical volume by using “pvcreate”. Ex- pvcreate /dev/sda10
+Add physical volume to volume group by using “vgcreate”. Ex- vgcreate VG_NAME /dev/sda{10,11,12}
+Create logical volume from volume group by using “lvcreate”. Ex- lvcreate –L 10G –n LV_NAME VG_NAME
+Create file system on logical volume by using “mkfs.ext4”. Ex- mkfs.ext4 /dev/VG_NAME/LV_NAME
+Mount the file system by using “mount”. Ex- mount /dev/VG_NAME/LV_NAME /lvm1
+N: B: Be certain to update: /etc/fstab so that volumes are mounted when the system reboots
+
+If the vg_name has two physical volumes called /dev/sda & /dev/sdb. How do you remove /dev/sdb from vg_name?
+“Vgreduce vg_name /dev/sdb
+
+How to extent the volume group?
+Using “vgextend” we can increase the volume group.
+
+What is LVM snapshot?
+LVM snapshots allow the administrator to create a new block device which presents an exact copy of a logical volume, frozen at some point in time.
+
+How are snapshots in LVM2 different from LVM1
+In LVM2 snapshots are read/write by default, whereas in LVM1, snapshots are read only.
+
+Command to create a snapshot
+# Lvcreate –s –L 200M –n SNAP_NAME /dev/VG_NAME/LV_NAME
+
+How to create a stripped logical volume?
+# Lvcreate –L 10G –i2 –I64 –n STRIPPED_LV_NAME VG_NAME
+
+The above command will create a stripped logical volume with the stripped size of 64KB, and a total size of 10G, and will use 2 physical volumes for the stripes, and will be named as STRIPPED_LV_NAME, on the volume group named VG_NAME
+
+How to create a mirrored logical volume?
+# Lvcreate –L 10G –m1 –n MIRROR_LV_NAME VG_NAME
+
+In the above command, -L option is used to specify the size of the logical volume, -m option is used to specify number of mirrors for the logical volume(in our case we have used on mirror), and the name of the logical volume is MIRRIR_LV_NAME and is created from a volume group known as VG_NAME
+
+How do you find that what are the disks are used for logical volume mirroring?
+Use “lvs –a –o +devices”
+
+How to take LVM configuration backup?
+Use “vgcfgbackup VG_NAME” to take the latest configuration backup of volume group. The default volume group backup location is “/etc/lvm/backup”
+
+How to re-create the device file for LVM volumes?
+Use “vgmknodes” to recreate the LVM device files.
+
+What is lvmdump?
+“Lvmdump” is a toll for VLM2 to collect the various information for diagnostic purpose, by default it creates a tar ball for submission along with a problem report
+
+How to know if a logical volume is stripped, linear or mirrored?
+Use “lvs –a –o segtype, devices, lv_name, vg_name”
+
+
+Assume Volume group “vg_name” is already exists. How do you extend the volume group with 50G? Provide all the steps with commands.
+Create physical volume with a size of 50G( # pvcreate /dev/sdd)
+Extend the volume group (# vgextend vg_name /dev/sdd)
+
+
+How to decommission/remove LVM completely from the host?
+Un-mount all the logical Filesystem Ex- umount /home
+Remove the logical volume using “lvremove” Ex- lvremove /dev/VG_NAME/LV_NAME
+Destroy the volume group using “vgremove” Ex- vgremove /dev/VG_NAME
+Remove physical volume using “pvremove” Ex- pvremove /dev/sda{10,11,12}
+Remove the entry from FSTAB
+
+
+ansible -m debug -a "var=hostvars['hostname']" localhost

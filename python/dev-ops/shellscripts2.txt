@@ -1,0 +1,3 @@
+https://www.shellscript.sh/variables2.html
+
+http://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html#Special-Parameters

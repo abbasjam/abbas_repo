@@ -1,0 +1,11 @@
+1. what u do in dxc as a devops engineer .
+2 R u used to created CI/CD pipe line
+3.what kind of job will be there in CI
+4.what kind of pipeline you will create
+5.when u will create free style jobs.
+6.what are all the jobs we need effective for CICD.
+7 how CICD configured in your environment .
+8.how code coverage will happening in your environment .
+9.what is the configuration for docker server..
+10. what kind of job you will do GIT hub?
+

@@ -1,0 +1,7 @@
+print ("file Handling")
+print ("------------")
+fp=open("sample.txt","w")
+fp.write("Today is Saturday\n")
+fp.write("Welcome All to BSS\n")
+fp.write("Thank you\n")
+fp.close()

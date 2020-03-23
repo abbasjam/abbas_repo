@@ -1,0 +1,76 @@
+
+http://www.careertimes.org/india/index-13062014-14.php
+
+
+https://developer.jboss.org/thread/195949?tstart=0&_sscc=t                      ( jboss-connection-pool)
+
+
+What server need to check first – physical memory is not fully utilized but swap is  fully utilized and  physical memory is fully utilized but swap  memory is free and why ?
+
+
+
+
+Q: – What is rpc and its role in nfs ?
+
+Q: – What is use if sar command and location sar log files.
+
+Q: – What is use of vmstat and explain its output & log files?
+
+Q: – What is Network bonding and how to check status of bonding ?
+
+Q: – What are the steps to configure network bonding in linux ?
+
+Q: – Define the role of Luci and Ricci in redhat cluster suite ?
+
+Q: – What is multipathing and why is it required ?
+
+Q: – what is iostat , describe its output and log files ?
+
+Q: – What is the difference of 2.4 and 2.6 kernel ?
+
+Q: – What are difference between ext3 and ext4
+
+Q: – What server need to check first – physical memory is not fully utilized but swap is  fully utilized and  physical memory is fully utilized but swap  memory is free and why ?
+
+Q: – What is chroot env in ftp and how enable chroot for ftp ?
+
+Q: – How to scan luns on the server?
+
+Q: – Difference between raid 3 & raid 5?
+
+Q: – How to execute cron every 5 min from Monday to Friday?
+
+Q: – How to check the machines status in vcs?
+
+Q: – How to extend disk space in vcs?
+
+Q: – Difference between -L & -l in lvcreate command ?
+
+Q: – What activity will run in background if failover of one node occurs ?
+
+Q: – What is "Split Brain" in cluster & is it visible in storage ?
+
+Q: – What is dom0 in Xen ?
+
+Q: – What is POST in Linux Booting Process ?
+
+Q: – What is initrd or ramdisk and use of initrd while booting ?
+
+Q: – What is soft & hard zoning ?
+
+Q: – What is wwpn & wwnn ?
+
+Q: – How Can we check the front & back ports on emc storage server through command line or gui   ?
+
+Q: – How can emc server be accessed through CLI   ?
+
+
+
+http://linoxide.com/linux-how-to/linux-interview-questions-answers/
+
+
+http://www.linuxtechi.com/experience-linux-admin-interview-questions/
+
+http://career.guru99.com/top-50-linux-interview-questions/
+
+

@@ -1,0 +1,1186 @@
+LVM Reduce
+
+http://www.linuxtechi.com/reduce-size-lvm-partition/
+
+
+df -h /home/
+
+ umount /home/
+
+e2fsck -f /dev/mapper/VolGroup-lv_home
+
+
+resize2fs /dev/mapper/VolGroup-lv_home 50G
+
+
+lvreduce -L 50G /dev/mapper/VolGroup-lv_home
+
+e2fsck -f /dev/mapper/VolGroup-lv_home
+
+
+mount /home/
+
+
+df -h /var
+
+umount /var
+
+
+e2fsck -f /dev/mapper/VolGroup-LogVol02
+
+resize2fs /dev/mapper/VolGroup-LogVol02 350G
+
+lvreduce -L 350G /dev/mapper/VolGroup-LogVol02
+
+
+e2fsck -f /dev/mapper/VolGroup-LogVol02
+
+mount /var
+
+
+------------------------------------------------
+
+LVM Extend
+
+check the free available space in the Volume group
+
+
+vgdisplay
+
+
+lvextend -L +10G /dev/mapper/VolGroup-lv_root
+
+resize2fs /dev/mapper/VolGroup-lv_root
+
+
+
+
+lvextend -L +30G /dev/mapper/VolGroup-LogVol00
+
+
+resize2fs /dev/mapper/VolGroup-LogVol00
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Find string using sed command
+
+----------------------------
+
+sed -n '/PROCEDURE `cmn_event_procedure`/p'  > test.txt
+
+
+sed -n '/insert  into `arc_exception_log`/p' FILENAME > test.txt
+
+sed -n '/INSERT INTO `arc_exception_log` VALUES/p' FILENAME > test.txt
+
+
+
+
+ 
+
+
+
+	to print the 2nd line of file2,
+
+sed -n '2p' file2 > newFile2
+
+
+awk '/cmn_event_procedure/ {for(i=1; i<=150; i++) {getline; print}}' inputfile
+
+
+11: How will you find the 99th line of a file using only tail and head command?
+
+tail +99 file1|head -1
+
+
+Find and Replace using sed command
+--------------------------------------
+
+
+sed -i 's/proj_estimate_upload/proj_estimate_upload_bkup/g' clicks_testnew_sep072015_bak.sql 
+
+
+
+---------------------------------------------------------------------------------------------ss
+
+
+
+/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.71.x86_64/bin
+
+/root/jboss-4.0.2/server/default/deploy
+
+
+find -type f -exec sed -i 's/192.168.1.195/localhost/g' {} \;
+
+
+find /root/jboss-4.0.2/server/default/deploy -type f -exec sed -i 's/192.168.1.195/localhost/g' {} \;
+
+
+
+find StockReport.jrxml -type f -exec sed -i 's/\/home/jboss/ReportFiles/marketing/\/\/root/ssl-report/ReportFiles/marketing\/g' {} \;
+
+
+find StockReport.jrxml -type f -exec sed -i 's/\/home1\/jboss/\/home\/jboss/g' {} \;
+
+
+find -type f -exec sed -i 's/192.168.1.195/localhost/g' {} \;
+
+find . -type f -name "*.jrxml" -exec sed -i 's/\/home\/jboss\/ReportFiles\/marketing/\/root\/ReportFiles\/marketing/g' {} \;
+
+
+find -d name /root/ssl-report/*.jrxml -type f -exec sed -i 's/\/home1\/jboss1\/ReportFiles1\/marketing1/\/root\/ReportFiles\/marketing/g' {} \;
+
+
+30      08      *       *       *       /var/sms/sms.sh
+30      22      *       *       *       /var/sms/proj.sh
+30      22      *       *       *       /var/sms/rmlog.sh
+
+
+
+
+-------------------------------------------------------------------------------------
+
+
+Virtual Terminal shortcuts
+These are some of the shortcuts that you should be aware of while working on virtual terminals.
+
+Shortcut	Function
+Home or Ctrl + a	Move the cursor to the start of the current line
+End or Ctrl + e	Move the cursor to the end of the current line
+Tab	Autocomplete commands
+Ctrl + u	Erase the current line
+Ctrl + w	Delete the word before the cursor
+Ctrl + k	Delete the line from the cursor position to the end
+reset	Reset the terminal
+history	List of commands executed by the user
+Arrow up	Scroll up in history and enter to execute
+Arrow down	Scroll down in history and enter to execute
+Ctrl + d	Logout from the terminal
+Ctrl + Alt + Del	Reboot the system
+
+
+-------------------------------------------------------------------------
+
+Remove dot files
+
+find /data -exec sudo setfattr -h -x security.selinux {} \;
+
+----------------------------------------------------------------------
+
+
+
+mod jk configuration
+
+
+
+http://blogs.encodo.ch/news/view_article.php?id=18
+
+
+https://tomcat.apache.org/connectors-doc/common_howto/loadbalancers.html
+
+Loadbalancing with mod_jk and Apache
+
+
+Published by Patrick on 11. January 2007 15:13:04
+Updated by Marco on 5. March 2008 11:34:15
+Now that we’ve built a recent version of mod_jk, lets use one of the newly gained features: Loadbalancing.
+
+Suppose we have two hosts, node1 and node2. Node1 runs an Apache and a Tomcat instance. On node2 we’ve got another Tomcat.
+
+ 
+
+A browser will connect to the host that’s running the Apache. Since the load on a single server running a web application can be pretty severe, we’re going to share the burden of serving servlets with multiple hosts (in our case two hosts). And we’re going to make mod_jk to do that for us.
+
+First let’s take a look at what’s needed to get Apache to talk with mod_jk. These lines should go into your httpd.conf:
+
+
+LoadModule jk_module /usr/lib/apache/1.3/mod_jk.so
+
+JkWorkersFile /etc/apache/workers.properties
+JkLogFile /var/log/apache/mod_jk.log
+JkLogLevel info
+JkLogStampFormat "[%a %b %d %H:%M:%S %Y] "
+
+<VirtualHost *>
+  ServerAdmin example@example.com
+  ServerAlias www.example.com
+  DocumentRoot /var/www
+  ServerName example.com
+  JkMount /* loadbalancer
+  JkMount /status/* status
+  ErrorLog /var/log/apache/example-com-error_log
+  CustomLog /var/log/apache/example-com-access_log combined
+</VirtualHost>
+The first line tells mod_jk where to look for its configuration. We’re going to create this file in a short while, but let’s first look at the other options.
+
+  JkMount /* loadbalancer
+  JkMount /status/* status
+These lines redirect all requests to ‘/’ to our JkWorker named loadbalancer and the requests to ‘/status/’ to the worker status. The workers are specified in the workers.properties file.
+
+Let’s have a look at this file:
+
+# workers to contact, that's what you have in your httpd.conf
+worker.list=loadbalancer,status
+
+#setup node1
+worker.node1.port=8009
+worker.node1.host=localhost
+worker.node1.type=ajp13
+worker.node1.lbfactor=50
+
+#setup node2
+worker.node2.port=8009
+worker.node2.host=host2
+worker.node2.type=ajp13
+worker.node2.lbfactor=100
+
+#setup the load-balancer
+worker.loadbalancer.type=lb
+worker.loadbalancer.balance_workers=node1,node2
+worker.loadbalancer.sticky_session=True
+#worker.loadbalancer.sticky_session_force=True
+
+# Status worker for managing load balancer
+worker.status.type=status
+We need to supply mod_jk with a list of top level workers; in our case, these are loadbalancer and status.
+
+worker.list=loadbalancer,status
+The configuration for our status worker is as easy as it gets:
+
+worker.status.type=status
+Configuring our workers which will actually do the hard work is no different in a load balanced environment:
+
+worker.node1.port=8009
+worker.node1.host=localhost
+worker.node1.type=ajp13
+This is exactly what you’d do if you had only one tomcat to connect to. Now comes the part that isn’t in the standard playbook:
+
+worker.node1.lbfactor=50
+[...]
+worker.node2.lbfactor=100
+These lines inform the loadbalancer to spread the load 1:2 over the nodes 1 & 2. It’s the ratio that’s important, and not the numbers itself. A lbfactor of 2 and 4 would yield the same result.
+
+But we don’t even have our loadbalancer worker defined, lets do that now:
+
+worker.loadbalancer.type=lb
+worker.loadbalancer.balance_workers=node1,node2
+worker.loadbalancer.sticky_session=True
+#worker.loadbalancer.sticky_session_force=True
+We’re defining a worker named loadbalancer with it’s type set to lb (obviously short for loadbalancer) and assign node1 and node2 to handle the load.
+
+Sticky sessions are an important feature if you rely on jSessionIDs and are not using any session-replication layer. If sticky_session is True a request always gets routed back to the node which assigned this jSessionID. If that host should get disconnected, crash or become unreachable otherwise the request will be forwarded to another host in our cluster (although not too successfully as the session-id is invalid in it’s context).
+You can prevent this from happening by setting sticky_session_force to True. In this case if the host handling the requested session-id fails, Apache will generate an internal server error 500.
+
+Now we’ve told mod_jk about our setup. If you are using sticky sessions, you’ll need to tell Tomcat to append its node-id to the session id. This needs to be the same as worker.name.jvm_route, which by default is the worker’s name (in our case node1 and node2).
+
+Search for the Engine-tag in your server.xml and add the following attribute:
+
+jvmRoute="node1"
+Do that on both Tomcat installations. If you don’t, the load balancing will work but only for the first request per session. The following lines will appear in your log file:
+
+[Thu Oct 26 17:28:36 2006] [3986:0000] [info]  get_most_suitable_worker::jk_lb_worker.c (672): all workers are in error state for session 1AB31B3F1F72D673E59D42F4A79E364C
+[Thu Oct 26 17:28:36 2006] [3986:0000] [error] service::jk_lb_worker.c (984): All tomcat instances failed, no more workers left for recovery
+[Thu Oct 26 17:28:36 2006] [3986:0000] [info]  jk_handler::mod_jk.c (1986): Service error=0 for worker=loadbalancer
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Nagios configuration details
+
+
+
+
+/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+
+	NAGIOS server configuration
+
+
+1) # /usr/local/naigos/etc/objects/localhost.cfg		( Host notification and service notification for localhost only)
+
+
+	define host{
+        use                     linux-server            ; Name of host template to use
+                                                        ; This host definition will inherit all variables that are defined
+                                                        ; in (or inherited by) the linux-server host template definition.
+        host_name               localhost
+        alias                   localhost
+        address                 127.0.0.1
+        }
+
+
+	define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       localhost
+        service_description             SSH
+        check_command                   check_ssh
+        notifications_enabled           1
+        }
+
+
+
+2)	# vi /usr/local/nagios/etc/objects/command.cfg 		( command definition only for localhost	)
+
+
+	# 'check_ssh' command definition
+
+	define command{
+        command_name    check_ssh
+        command_line    $USER1$/check_ssh $ARG1$ $HOSTADDRESS$
+        }
+
+
+	Mail configuraiton:
+
+
+	# 'notify-host-by-email' command definition
+
+	define command{
+        command_name    notify-host-by-email
+        command_line    /usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$\n" | /bin/mail -s "** $NOTIFICATIONTYPE$ Host Alert: $HOSTNAME$ is $HOSTSTATE$ **" $CONTACTEMAIL$
+        }
+
+	# 'notify-service-by-email' command definition
+	define command{
+	       command_name    notify-service-by-email
+	       command_line    /usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: 		$HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nAdditional Info:\n\n$SERVICEOUTPUT$\n" | /bin/mail -r mohamed.abbas@guruinfo.co.in -s "** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$
+		       }
+		
+	
+	   service_notification_commands
+	   notify-service-by-sms
+	# 'notify-service-by-sms' command definition
+		define command{
+        		command_name    notify-service-by-sms
+        		command_line    /usr/local/nagios/libexec/sms.sh  "Host: $HOSTNAME$"
+               		 }
+
+
+
+
+
+3)	# vi /usr/local/nagios/etc/objects/contacts.cfg			( contacts definition )
+
+
+	define contact{
+        contact_name                    nagiosadmin             ; Short name of user
+        use                             generic-contact         ; Inherit default values from generic-contact template (defined above)
+        alias                           Nagios Admin            ; Full name of user
+
+        email                           viknesh_km@guruinfo.co.in , mohamed.abbas@guruinfo.co.in        ; <<***** CHANGE THIS TO YOUR EMAIL ADDRESS ******
+        }
+
+
+
+4)	vi /usr/local/naigos/etc/service.cfg				( service definition for only NRPE clients)
+
+
+
+	define service{
+        use                     generic-service
+        host_name               testserver
+        service_description     HTTP
+        check_command           check_nrpe!check_http
+
+
+5)	vi /usr/local/nagios/etc/host.cfg				( Host definition for only NRPE clients)
+
+
+	## Default
+	define host{
+	use                             linux-box               ; Inherit default values from a template
+	host_name                       ClicksERP                      ; The name we're giving to this server
+	alias                           CentOS 6                ; A longer name for the server
+	address                         192.168.10.28            ; IP address of Remote Linux host
+	}
+
+6)	vi /usr/local/naigos/etc/					( nagios configuration file and define object for localhost and NRPE )
+
+	cfg_file=/usr/local/nagios/etc/hosts.cfg
+	cfg_file=/usr/local/nagios/etc/services.cfg
+	cfg_file=/usr/local/nagios/etc/objects/localhost.cfg
+	cfg_file=/usr/local/nagios/etc/objects/commands.cfg
+	cfg_file=/usr/local/nagios/etc/objects/contacts.cfg
+
+
+
+
+
+
+Nagios NRPE Client configuration  :
+
+
+
+1)	# vi /usr/local/nagios/etc/nrpe.cfg
+
+
+
+Ex:	
+
+	command[check_ftp]=/usr/local/nagios/libexec/check_ftp -H 127.0.0.1
+	command[check_users]=/usr/local/nagios/libexec/check_users -w 5 -c 10
+	command[check_load]=/usr/local/nagios/libexec/check_load -w 15,10,5 -c 30,25,20
+	command[check_ping]=/usr/local/nagios/libexec/check_ping -w 100.0,20% -c 500.0,60% -H localhost
+	command[check_hda1]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /dev/hda1
+	#command[check_zombie_procs]=/usr/local/nagios/libexec/check_procs -w 5 -c 10 -s Z
+	command[check_total_procs]=/usr/local/nagios/libexec/check_procs
+	command[check_http]=/usr/local/nagios/libexec/check_http -H localhost -I 192.168.3.22 -p 80 -w 80 -c 90
+	command[check_swap]=/usr/local/nagios/libexec/check_swap -w 20% -c 10%
+	command[check_mbean_collector]=/usr/local/nagios/libexec/check_mbean_collector -H localhost -p 5566 -m java.lang:type=Memory -a HeapMemoryUsage -w 70 -c 90
+
+
+
+
+
+	java sendsms "$1" "$2"
+
+
+http://kedar.nitty-witty.com/blog/10-steps-mysql-monitoring-nagios-installation-configuration
+
+check_mysql_health --hostname localhost --port 3306 | --socket unix --username nagios --password naios --mode long-running-procs --method mysql      
+        
+
+
+http://www.sms-integration.com/video/video-how-to-send-sms-from-nagios/sms-message-from-nagios/sms-message-from-nagios.html
+
+http://www.sms-integration.com/video/video-wavecom-modem-configuration-linux/wavecom-modem-send-sms-text-message-linux-fedora/wavecom-modem-send-sms-text-message-linux-fedora.html
+
+
+sms_send.sh
+
+#!/bin/bash
+url1="http://127.0.0.1:9501/api?action=sendmessage&username=admin&password=abc123&recipient=06203105366&messagetype=SMS:TEXT&messagedata="
+url2="$@"
+url2+=$(php -r "echo rawurlencode('$(sed "s/'/\\\\'/g" <<< )');")
+url=$url1+$url2
+wget -O- "$url"
+
+
+
+
+
+wget "http://api.clickatell.com/http/sendmsg?user=clicatel-user-name&password=password&&api_id=XXXXX&to= 651234567&text=' *** Welcome to adminlogs.info ***'"
+
+
+
+wget "http://hpsms.dial4sms.com/api/web2sms.php?user=apdplc&password=Aprakash@14&&api_id=APDPLC&to= 9884335041&text=' *** Welcome to adminlogs.info ***'"
+
+
+
+ curl "http://hpsms.dial4sms.com/api/web2sms.php?user=apdplc&password=Aprakash@14&api_id=APDPLC&to=9884335041&text=' *** Welcome to adminlogs.info ***'"
+
+
+ wget -O- "http://hpsms.dial4sms.com/api/web2sms.php?user=apdplc&password=Aprakash@14&api_id=APDPLC&to=9884335041&text=' *** Welcome to adminlogs.info ***'"
+
+	
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+gluster configuration 
+
+
+
+gluster peer probe server2
+
+gluster peer probe server1
+
+mkdir /data/brick1/gv0
+
+gluster volume create gv0 replica 2 server1:/data/brick1/gv0 server2:/data/brick1/gv0
+gluster volume start gv0
+
+gluster volume info
+
+
+mount -t glusterfs server1:/gv0 /mnt
+
+
+mkdir /opt/glusterfs/gs0
+gluster volume create gs2 replica 2 testserver:/opt/glusterfs/gs2 example.com:/opt/glusterfs/gs2
+gluster volume start gs2
+gluster volume info
+mount -t glusterfs testserver:/gs2 /mnt/gs2
+
+
+mkdir /opt/glusterfs/gs1
+
+gluster volume create gs1 replica 2 testserver:/opt/glusterfs/gs1 example.com:/opt/glusterfs/gs1
+gluster volume start gs1
+gluster volume info
+mount -t glusterfs testserver:/gs1 /mnt/gs1
+
+---------------------------------------------------------------------------------------------------------------------
+
+NO of open files check scripts
+
+
+#!/bin/bash
+# Nagios Plugin Bash Script - check_open_files.sh
+# This script checks the number of currently opened files for the specified user with the specified WARNING and CRITICAL threshold
+#
+# Check for missing parameters
+if [[ -z "$1" ]] || [[ -z "$2" ]] || [[ -z "$3" ]]; then
+        echo "Missing parameters! Syntax: ./check_open_files.sh USER WARNING_THRESHOLD CRITICAL_THRESHOLD"
+        exit 2
+fi
+# Check for number of currently opened files
+ofiles=$(sudo /usr/sbin/lsof |grep $1 |grep REG |wc -l)
+# Check if number of currently opened files is lower than WARNING threshold parameter
+if [[ "$ofiles" -lt "$2" ]]; then
+        echo "OK - Number of open files is $ofiles"
+        exit 0
+fi
+# Check if number of currently opened files is greater than WARNING threshold parameter and lower than CRITICAL threshold parameter
+if [[ "$ofiles" -gt "$2" ]] && [[ "$ofiles" -lt "$3" ]]; then
+        echo "WARNING - Number of open files is $ofiles"
+        exit 1
+fi
+# Check if number of currently opened files is greater than CRITICAL threshold parameter
+if [[ "$ofiles" -gt "$3" ]]; then
+        echo "CRITICAL - Number of open files is $ofiles"
+        exit 2
+fi
+
+-----------------------------------------------------------------------------------------------------------------
+
+
+mysql configuration master - slave
+
+https://docs.jboss.org/author/display/AS72/AS7+Cluster+Howto
+
+https://developer.jboss.org/thread/217368
+
+
+Phase I: Configure Master Server (192.168.1.1) for Replication
+
+# vi /etc/my.cnf
+
+server-id = 1
+binlog-do-db=clicksdb_010414
+relay-log = /var/lib/mysql/mysql-relay-bin
+relay-log-index = /var/lib/mysql/mysql-relay-bin.index
+log-error = /var/lib/mysql/mysql.err
+master-info-file = /var/lib/mysql/mysql-master.info
+relay-log-info-file = /var/lib/mysql/mysql-relay-log.info
+log-bin = /var/lib/mysql/mysql-bin
+
+
+# /etc/init.d/mysqld restart
+
+
+# mysql -u root -p
+
+
+
+mysql> GRANT REPLICATION SLAVE ON *.* TO 'admin_rep'@'%' IDENTIFIED BY 'Db@dmin1$';
+mysql> FLUSH PRIVILEGES;
+mysql> FLUSH TABLES WITH READ LOCK;
+mysql> SHOW MASTER STATUS;
+
++------------------+----------+--------------+------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |
++------------------+----------+--------------+------------------+
+| mysql-bin.000003 | 11128001 | tecmint		 |                  |
++------------------+----------+--------------+------------------+
+1 row in set (0.00 sec)
+
+mysql> quit;
+
+
+#  mysqldump -u root -p --all-databases --master-data > /root/dbdump.db
+
+mysql> UNLOCK TABLES;
+mysql> quit;
+
+scp /root/dbdump.db root@192.168.1.2:/root/
+
+
+
+
+Phase II: Configure Slave Server (192.168.1.2) for Replication
+---------------------------------------------------------------
+
+# vi /etc/my.cnf
+
+server-id = 2
+master-host=192.168.2.109
+master-connect-retry=60
+master-user=admin_rep
+master-password=Db@dmin1$
+replicate-do-db=clicksdb_010414
+relay-log = /var/lib/mysql/mysql-relay-bin
+relay-log-index = /var/lib/mysql/mysql-relay-bin.index
+log-error = /var/lib/mysql/mysql.err
+master-info-file = /var/lib/mysql/mysql-master.info
+relay-log-info-file = /var/lib/mysql/mysql-relay-log.info
+log-bin = /var/lib/mysql/mysql-bin
+
+
+# mysql -u root -p < /root/dbdump.db
+
+
+# /etc/init.d/mysqld restart
+
+
+# mysql -u root -p
+
+mysql> slave stop;
+mysql> CHANGE MASTER TO MASTER_HOST='192.168.2.109', MASTER_USER='admin_rep', MASTER_PASSWORD='Db@dmin1$', MASTER_LOG_FILE='mysql-bin.000003', MASTER_LOG_POS=11128001;
+mysql> slave start;
+mysql> show slave status\G
+
+
+
+
+ SET GLOBAL SQL_SLAVE_SKIP_COUNTER = 1;
+
+
+Verifying MySQL Replication on Master and Slave Server
+
+
+mysqlbinlog mysql-relay-bin.000002  > /home/sqlfortest.txt
+
+
+End.
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+cvs server configuraiton
+
+
+cvs import testing INITIAL start
+
+cvs import ProjectX INITIAL start 
+
+cvs import -m "your description here" MyProject INITIAL start
+
+cvs import -m "I am testing CVS" your-checkout-folder your-project-name start
+
+
+https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Managing_Confined_Services/chap-Managing_Confined_Services-Squid_Caching_Proxy.html
+
+http://www.cyberciti.biz/faq/linux-setup-a-concurrent-versioning-system-cvs-howto/
+
+Mysql upgrade
+
+http://opensourcedbms.com/dbms/how-to-upgrade-mysql-5-5-to-mysql-5-6-on-centos-6-3-red-hat-fedora/
+
+
+0-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+IP TABLES
+
+
+iptables --policy INPUT DROP
+iptables --policy OUTPUT DROP
+iptables --policy FORWARD DROP
+
+
+
+iptables -A INPUT -s 10.10.10.10 -j DROP
+
+
+iptables -A INPUT -s 10.10.10.0/24 -j DROP
+
+
+
+
+Allow all incomming 
+
+
+iptables -A INPUT -p tcp --dport ssh -s 10.10.10.10 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+iptables -A OUTPUT -p tcp --sport 22 -d 10.10.10.10 -m state --state ESTABLISHED -j ACCEPT
+
+
+
+Allow all outgoing 
+
+
+iptables -A OUTPUT -o eth0 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+iptables -A INPUT -i eth0 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+
+
+
+-----------------------------------------------------------------------------------------------------------------
+
+
+iptables -A INPUT -p tcp --dport ssh -m state --state NEW,ESTABLISHED -j ACCEPT
+
+iptables -A OUTPUT -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+
+--------------
+
+iptables -A INPUT -p tcp --dport ssh -m state --state NEW,ESTABLISHED -j ACCEPT
+
+iptables -A OUTPUT -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+
+
+--------
+
+iptables -A INPUT -p tcp --dport ssh -m state --state NEW,ESTABLISHED -j ACCEPT
+
+iptables -A OUTPUT -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+
+-----------
+
+iptables -A INPUT -p tcp --dport ssh -m state --state NEW,ESTABLISHED -j ACCEPT
+
+iptables -A OUTPUT -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+
+-------------
+
+iptables -A INPUT -p tcp --dport ssh -m state --state NEW,ESTABLISHED -j ACCEPT
+
+iptables -A OUTPUT -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+
+--------
+
+iptables -A INPUT -p tcp --dport ssh -m state --state NEW,ESTABLISHED -j ACCEPT
+
+iptables -A OUTPUT -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+
+--------
+
+
+/sbin/service iptables save
+
+
+
+
+To clear all the currently configured rules, you can issue the flush command.
+
+iptables -F
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+
+
+# Modify this file accordingly for your specific requirement.
+# http://www.thegeekstuff.com
+# 1. Delete all existing rules
+iptables -F
+
+# 2. Set default chain policies
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+iptables -P OUTPUT DROP
+
+# 3. Block a specific ip-address
+#BLOCK_THIS_IP="x.x.x.x"
+#iptables -A INPUT -s "$BLOCK_THIS_IP" -j DROP
+
+# 4. Allow ALL incoming SSH
+#iptables -A INPUT -i eth0 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+#iptables -A OUTPUT -o eth0 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+
+
+Port Redirect
+
+
+
+iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 8080 -j REDIRECT --to-port 443
+
+iptables -A INPUT -i eth0 -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -o eth0 -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT
+
+
+# 5. Allow incoming SSH only from a sepcific network
+#iptables -A INPUT -i eth0 -p tcp -s 192.168.200.0/24 --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+#iptables -A OUTPUT -o eth0 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+
+# 6. Allow incoming HTTP
+#iptables -A INPUT -i eth0 -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+#iptables -A OUTPUT -o eth0 -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
+
+# Allow incoming HTTPS
+#iptables -A INPUT -i eth0 -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT
+#iptables -A OUTPUT -o eth0 -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT
+
+# 7. MultiPorts (Allow incoming SSH, HTTP, and HTTPS)
+iptables -A INPUT -i eth0 -p tcp -m multiport --dports 22,80,443 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -o eth0 -p tcp -m multiport --sports 22,80,443 -m state --state ESTABLISHED -j ACCEPT
+
+# 8. Allow outgoing SSH
+iptables -A OUTPUT -o eth0 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -i eth0 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+
+# 9. Allow outgoing SSH only to a specific network
+#iptables -A OUTPUT -o eth0 -p tcp -d 192.168.101.0/24 --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+#iptables -A INPUT -i eth0 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+
+# 10. Allow outgoing HTTPS
+iptables -A OUTPUT -o eth0 -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -i eth0 -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT
+
+# 11. Load balance incoming HTTPS traffic
+#iptables -A PREROUTING -i eth0 -p tcp --dport 443 -m state --state NEW -m nth --counter 0 --every 3 --packet 0 -j DNAT --to-destination 192.168.1.101:443
+#iptables -A PREROUTING -i eth0 -p tcp --dport 443 -m state --state NEW -m nth --counter 0 --every 3 --packet 1 -j DNAT --to-destination 192.168.1.102:443
+#iptables -A PREROUTING -i eth0 -p tcp --dport 443 -m state --state NEW -m nth --counter 0 --every 3 --packet 2 -j DNAT --to-destination 192.168.1.103:443
+
+# 12. Ping from inside to outside
+iptables -A OUTPUT -p icmp --icmp-type echo-request -j ACCEPT
+iptables -A INPUT -p icmp --icmp-type echo-reply -j ACCEPT
+
+# 13. Ping from outside to inside
+iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
+
+# 14. Allow loopback access
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A OUTPUT -o lo -j ACCEPT
+
+# 15. Allow packets from internal network to reach external network.
+# if eth1 is connected to external network (internet)
+# if eth0 is connected to internal network (192.168.1.x)
+iptables -A FORWARD -i eth0 -o eth1 -j ACCEPT
+
+# 16. Allow outbound DNS
+#iptables -A OUTPUT -p udp -o eth0 --dport 53 -j ACCEPT
+#iptables -A INPUT -p udp -i eth0 --sport 53 -j ACCEPT
+
+# 17. Allow NIS Connections
+# rpcinfo -p | grep ypbind ; This port is 853 and 850
+#iptables -A INPUT -p tcp --dport 111 -j ACCEPT
+#iptables -A INPUT -p udp --dport 111 -j ACCEPT
+#iptables -A INPUT -p tcp --dport 853 -j ACCEPT
+#iptables -A INPUT -p udp --dport 853 -j ACCEPT
+#iptables -A INPUT -p tcp --dport 850 -j ACCEPT
+#iptables -A INPUT -p udp --dport 850 -j ACCEPT
+
+# 18. Allow rsync from a specific network
+iptables -A INPUT -i eth0 -p tcp -s 192.168.101.0/24 --dport 873 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -o eth0 -p tcp --sport 873 -m state --state ESTABLISHED -j ACCEPT
+
+# 19. Allow MySQL connection only from a specific network
+iptables -A INPUT -i eth0 -p tcp -s 192.168.200.0/24 --dport 3306 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -o eth0 -p tcp --sport 3306 -m state --state ESTABLISHED -j ACCEPT
+
+# 20. Allow Sendmail or Postfix
+iptables -A INPUT -i eth0 -p tcp --dport 25 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -o eth0 -p tcp --sport 25 -m state --state ESTABLISHED -j ACCEPT
+
+# 21. Allow IMAP and IMAPS
+iptables -A INPUT -i eth0 -p tcp --dport 143 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -o eth0 -p tcp --sport 143 -m state --state ESTABLISHED -j ACCEPT
+
+iptables -A INPUT -i eth0 -p tcp --dport 993 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -o eth0 -p tcp --sport 993 -m state --state ESTABLISHED -j ACCEPT
+
+# 22. Allow POP3 and POP3S
+iptables -A INPUT -i eth0 -p tcp --dport 110 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -o eth0 -p tcp --sport 110 -m state --state ESTABLISHED -j ACCEPT
+
+iptables -A INPUT -i eth0 -p tcp --dport 995 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -o eth0 -p tcp --sport 995 -m state --state ESTABLISHED -j ACCEPT
+
+# 23. Prevent DoS attack
+iptables -A INPUT -p tcp --dport 80 -m limit --limit 25/minute --limit-burst 100 -j ACCEPT
+
+# 24. Port forwarding 422 to 22
+iptables -t nat -A PREROUTING -p tcp -d 192.168.102.37 --dport 422 -j DNAT --to 192.168.102.37:22
+iptables -A INPUT -i eth0 -p tcp --dport 422 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -o eth0 -p tcp --sport 422 -m state --state ESTABLISHED -j ACCEPT
+
+# 25. Log dropped packets
+iptables -N LOGGING
+iptables -A INPUT -j LOGGING
+iptables -A LOGGING -m limit --limit 2/min -j LOG --log-prefix "IPTables Packet Dropped: " --log-level 7
+iptables -A LOGGING -j DROP
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Linux commands
+--------------
+
+
+
+1)  	How do I find how long ago a Linux system was installed?
+
+
+	 rpm -qi basesystem
+
+2)	Remote Sync
+
+	rsync -avzh root@192.168.0.100:/home/tarunika/rpmpkgs /tmp/myrpms
+	
+	rsync -avzh root@192.168.1.28:/home/jboss ./
+
+
+
+
+3) 	Reboot log
+
+	#	last |grep -i reboot
+
+	Put a one-liner in /etc/rc.local like:
+
+	/bin/date +%F_%T | /bin/mail -s "myhost was rebooted" me@example.com
+
+	 /var/log/secure
+	
+	/var/log/messages
+
+4)	Changing the MTAWhere is eth0 on new Dell servers
+
+
+
+5)
+
+
+by Randy ten Have in Weblog
+Dell made some changes in their 12th generation servers like the R520, R620, R720, etc. These changes reflect Consistent Network Device Naming announced by the Fedora project earlier. Onboard network interfaces are no longer know as eth0, eth1, etc. by default but now named em1, em2, etc.
+
+System Administrators can then use BIOS-provided names, which are consistent and not arbitrarily named, for their network ports. This eliminates the confusion that non-deterministic naming brings, and eliminates the use of hard-coded MAC address based port renaming which a) is racy and error-prone, and b) introduces state into an otherwise stateless system.
+
+But there can be some problems. What if you use licensed software that used the MAC-address as unique identifier and polls hard to /dev/eth0. Well, then you have to hack around in the boot parameters of grub to use the old ethX device naming. This is also the case if you’re current PXE of Configuration Management isn’t ready for the new device naming.
+
+cp –preserve=context /etc/grub.conf /etc/grub.bak
+Add biosdevname=0 to the kernel boot arguments in /etc/grub.conf.
+Rename /etc/sysconfig/network-scripts/ifcfg-em1 to /etc/sysconfig/network-scripts/ifcfg-eth0, changing the line DEVICE=”em1? to DEVICE=”eth0?
+Delete /etc/udev/rules.d/70-persistent-net.rules
+Reboot.
+Now the network devices have their old names again. I’ve tested this with CentOS 6.2. If you’re looking for a quick fix for your current PXE-environment just use the first two steps (Add biosdevname=0 to the kernel boot arguments in /etc/grub.conf).
+
+	//For CentOS/Fedora/RHEL
+
+	# alternatives --config mta
+
+
+	
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+ssmtp mohamed.abbas@guruinfo.co.in
+Subject: Daily Backup Details
+Email send test using SSMTP
+via SMTP server.
+
+echo "     Today Backup is completed successfully.     "
+
+echo		"Backup Folder Path is 	 : $
+
+Backup Folder Size   	 : 1 TB
+
+Today Backup File Size	 : 200 MB
+
+
+-------------------------------------------------------------------------------------
+
+
+File Size      :           du -sh ./*
+
+
+USED= `df . | awk '{print $5}' | sed -ne 2p | cut -d"%" -f1`          # directory space
+
+du -sh ${DIR}/* | $MAILX -s "$SUBJECT" "$MAILTO
+
+
+
+LIMIT='80'
+
+DIR='/var'
+
+
+
+if [ $USED -gt $LIMIT ]
+
+#If used space is bigger than LIMIT
+
+then
+
+      du -sh ${DIR}/* | $MAILX -s "$SUBJECT" "$MAILTO"
+
+#This will print space usage by each directory inside directory $DIR, and after MAILX will send email with SUBJECT to MAILTO
+
+fi
+
+
+
+#######################################################################################################################################################
+
+
+
+
+#!/bin/bash
+# *************************************************************
+# file: mysqldump.sh
+# date: 2007-07-04 00:22
+# author: (c) by Marko Schulz - <info@tuxnet24.de>
+# description: Get a mysqldump of all mysql databases.
+# *************************************************************
+
+# name of database user ( must have LOCK_TABLES rights )...
+
+MYSQL=/usr/bin/mysql
+MYSQLDUMP=/usr/bin/mysqldump
+dbUsername="slave_user"
+
+# password of database user...
+dbPassword="Replic@123"
+
+# mount -t cifs //192.168.3.13/Shared -o username=web1,password=ERPshare /mnt
+
+
+# path to backup directory...
+#dbBackup="/mnt/SERVER/mysqldump"
+dbBackupdaily="/mnt/daily"
+dbBackupweekly="/mnt/weekly"
+
+# *************************************************************
+# program action...
+
+# get current date ( YYYY-MM-DD )...
+day=$( date +%u )
+date=$( date +%Y-%m-%d )
+
+
+# loop all databases...
+
+databases="cluster2"
+databases1="test"
+
+if [ $day -ne 6 ]
+then
+[ ! -d "$dbBackupdaily" ]  && mkdir -p $dbBackupdaily
+        for db in $databases; do
+                 mysqldump -d -u $dbUsername --password=$dbPassword --opt --databases $db --routines | gzip -9 >${dbBackupdaily}/${db}-${date}.sql.gz
+
+        done
+else
+[ ! -d "$dbBackupweekly" ]  && mkdir -p $dbBackupweekly
+        for db in $databases1; do
+                 mysqldump -d -u $dbUsername --password=$dbPassword --opt --databases $db --routines | gzip -9 >${dbBackupweekly}/${db}-${date}.sql.gz
+        done
+
+fi
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+DATE SCRIPTS
+
+
+http://www.cyberciti.biz/faq/linux-unix-formatting-dates-for-display/
+
+
+# day of week (1..7); 1 is Monday  %u
+
+# day of week (0..6); 0 is Sunday  %w
+
+[root@localhost ~]# echo $(date +'%u')
+
+date=$( date +%u)
+
+
+#!/bin/bash
+
+da=$( date +%u)
+
+if [ $da -eq 6 ]
+then
+        echo "Saturday"
+else
+        echo "Sun Mon Tus "
+
+fi
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+2. File Transfer 
+2.2 Establishing remote connection 
+To establish a connection to a remote system use the sftp command. After the connection is 
+established provide the valid password. 
+ 
+$>sftp –oPort=44 user@203.90.127.210 
+2.2 File uploading 
+ Move a file from the local host to remote host 
+ 
+ $>put filename 
+ 
+2.3 To put multiple files using wild cards 
+ 
+ $>mput pattern* 
+2.4 File downloading 
+ Move a file from remote host to local host 
+ 
+ $>get filename 
+ 
+2.5 To get multiple files using wild cards 
+ 
+ $>mget pattern* 
+2.6 Making a new directory on remote host 
+ 
+ $>mkdir directoryname 
+2.7 Changing directory in local host 
+ 
+ $>lcd directorypath 
+ 
+  6
+ 
+ 
+2.8 Changing directory in the remote host 
+ 
+ $>cd directorypath 
+2.9 Closing the connection 
+ 
+ $>bye 
+
+--------------
+
+
+Listing files and directories 
+ls lists the files in the current directory or the directory named as an argument. There are 
+many options: 
+ 
+ls -a [directory] 
+lists all files, including files whose names start with a period. 
+ 
+ls -c [directory] 
+lists files by date of creation. 
+ 
+ls -l [directory] 
+lists files in long form: links, owner, size, date and time of last change. 
+ 
+ls -p [directory] 
+subdirectories are indicated by /. 
+  5
+ 
+ 
+ls -r [directory] 
+reverses the listing order. 
+ 
+ls -s [directory] 
+gives the sizes of files in blocks. 
+ 
+ls -C [directory] 
+lists files in columns using full screen width. 
+ 
+ls -R [directory] 
+recursively lists files in the current directory and all subdirectories. 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,64 @@
+umount -a -t cifs -l
+
+find out zombie process
+
+ps aux | awk '{ print $8 " " $2 }' | grep -w Z
+
+In the case of Firewall blocking, NRPE by default runs on port 5666, ensure that that port is allowed.
+
+
+SELECT NAME, COUNT FROM INNODB_METRICS WHERE NAME LIKE '%buff%pool%page%';
+
+
+SHOW GLOBAL VARIABLES LIKE '%innodb_max_dirty_pages_pct%'
+
+https://www.percona.com/blog/2012/02/17/the-relationship-between-innodb-log-checkpointing-and-dirty-buffer-pool-pages/
+
+ps aux | awk '{ print $8 " " $2 }' | grep -w z
+ps aux | awk '{ print $8 " " $2 }' | grep -w Z
+
+
+CREATE USER 'erpadmin'@'%' IDENTIFIED BY 'AdMInDB54';
+
+GRANT ALL PRIVILEGES ON *.* TO 'erpadmin'@'%' WITH GRANT OPTION;
+
+ALTER USER 'erpadmin'@'%' IDENTIFIED WITH mysql_native_password BY 'AdminDB@18';
+
+
+resize the tables size
+
+optimize table tablename
+
+https://stackoverflow.com/questions/45839537/mysql-tablename-ibd-file-size-is-huge
+
+
+
+CREATE USER 'swadmin'@'%' IDENTIFIED BY '$W@dmin!7';
+GRANT ALL PRIVILEGES ON *.* TO 'swadmin'@'%' WITH GRANT OPTION;
+ALTER USER 'swadmin'@'%' IDENTIFIED WITH mysql_native_password BY '$W@dmin!7';
+
+
+
+
+CREATE USER 'dbadmin'@'%' IDENTIFIED BY 'AdMInDB5$';
+GRANT ALL PRIVILEGES ON *.* TO 'dbadmin'@'%' WITH GRANT OPTION;
+ALTER USER 'dbadmin'@'%' IDENTIFIED WITH mysql_native_password BY 'AdMInDB5$';
+
+
+
+
+CREATE USER 'erpadmin'@'%' IDENTIFIED BY 'AdMInDB54';
+GRANT ALL PRIVILEGES ON *.* TO 'erpadmin'@'%' WITH GRANT OPTION;
+ALTER USER 'erpadmin'@'%' IDENTIFIED WITH mysql_native_password BY 'AdminDB@18';
+
+
+LOAD DATA LOCAL INFILE 'D:\\USER DATAS\\ERP\\Desktop\\dnd\\feb23\\m6.csv'
+INTO TABLE consolidated_mobile_no 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n' 
+IGNORE 1 LINES
+
+10552453 
+
+
+Due to Server Upgradations the server will be down for a duration of 05 mins from 10:05 A.M. to 10:10 A.M. on 07-Aug-2019.Thanks for your Cooperation

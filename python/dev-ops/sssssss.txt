@@ -1,0 +1,29 @@
+
+Devops				
+
+
+Source Code Maintenance 	 	:	GIT,SVN,CVS
+
+Build Tool				:	ANT , Maven
+
+Containerization Tool			:	Docker Container
+
+Continuous Integration			:	Jenkins
+
+Congiguration Management Tool		:	Ansible
+
+Virtualization				:	Vagrant
+
+Networking				:	TCP/IP Routing protocols,NFS,DNS
+
+Scripting Languages			:	HTML, Linux shell script, Python
+
+Operating Systems 			:	Linux Redhat, Ubuntu,CentOS,Windows
+
+
+Web and Proxy Servers 			:	Apache,Nginx , JBOSS , Squid, Tomcat
+
+Database 				:	Mysql,  postgres, SQL Server
+
+Tools Handled				:	Nagios, Mysql Admin, Eclipse,PhpMyadmin,MantisBT
+

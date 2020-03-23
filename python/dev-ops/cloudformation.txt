@@ -1,0 +1,584 @@
+cloudformation
+ TutorialSharp 
+
+Default syntax
+
+Resources:
+	Logical ID:
+	Type: Resource Type
+	Properties:
+		set of properties
+
+Resources:	
+	MyEC2Instance:
+		Type: "AWS::EC2::Instance
+		Properties:
+			ImageId: "ami-0ff8a91507f77f867"
+
+--------------------------------------
+AWSTemplateFormatVersion: 2020-02-19
+Description: Basic EC2 Instance
+
+Resources:
+	DevEC2Instance:
+	 	Type: AWS::EC2::Instance
+		Properties:
+			ImageId: ami-0cd3dfa4e37921605
+			InstanceType: t2.micro
+			KeyName: cfn-key
+			SecurityGroups:
+				- default
+
+
+create stack
+updload templatefile
+
+cfn-ec2-addnewsecuritygroup.yml
+
+AWSTemplateFormatVersion: 2020-02-19
+Description: Basic EC3 Instance
+
+Resources:
+	DevEC2Instance:
+	 	Type: AWS::EC2::Instance
+		Properties:
+			ImageId: ami-0cd3dfa4e37921605
+			InstanceType: t2.micro
+			KeyName: cfn-key
+			SecurityGroups:
+				- default
+				- !Ref SSHSecurityGroup 
+	SSHSecurityGroup:
+		Type: AWS:EC2::securityGroup
+		Properties:
+			GroupDescription: my new SSH SG
+			SecurityGroupIngress:
+				- IpProtocol: tcp
+				  FromPort: '22'
+				  ToPort: '22'
+				  CidrIp: 0.0.0.0/0
+
+---------------------------------------------------------------
+
+Add new rule in security group
+
+
+
+AWSTemplateFormatVersion: 2020-02-19
+Description: Basic EC3 Instance
+
+Resources:
+	DevEC2Instance:
+	 	Type: AWS::EC2::Instance
+		Properties:
+			ImageId: ami-0cd3dfa4e37921605
+			InstanceType: t2.micro
+			KeyName: cfn-key
+			SecurityGroups:
+				- default
+				- !Ref SSHSecurityGroup 
+	SSHSecurityGroup:
+		Type: AWS:EC2::securityGroup
+		Properties:
+			GroupDescription: my new SSH SG
+			SecurityGroupIngress:
+				- IpProtocol: tcp
+				  FromPort: '22'
+				  ToPort: '22'
+				  CidrIp: 0.0.0.0/0
+				- IpProtocol: tcp
+				  FromPort: '8080'
+				  ToPort: '8080'
+				  CidrIp: 0.0.0.0/0
+
+---------------------
+
+Elastic ip add
+
+AWSTemplateFormatVersion: 2020-02-19
+Description: Basic EC3 Instance
+
+Resources:
+	DevEC2Instance:
+	 	Type: AWS::EC2::Instance
+		Properties:
+			ImageId: ami-0cd3dfa4e37921605
+			InstanceType: t2.micro
+			KeyName: cfn-key
+			SecurityGroups:
+				- default
+				- !Ref SSHSecurityGroup 
+	SSHSecurityGroup:
+		Type: AWS:EC2::securityGroup
+		Properties:
+			GroupDescription: my new SSH SG
+			SecurityGroupIngress:
+				- IpProtocol: tcp
+				  FromPort: '22'
+				  ToPort: '22'
+				  CidrIp: 0.0.0.0/0
+				- IpProtocol: tcp
+				  FromPort: '8080'
+				  ToPort: '8080'
+				  CidrIp: 0.0.0.0/0
+	MyElasticIP:
+		Type: AWS:EC2::EIP
+		Properties:
+			InstanceId: !Ref DevEC2Instance
+
+------------------
+
+Case sensitive test with resource properties
+
+
+
+AWSTemplateFormatVersion: 2020-02-19
+Description: Basic EC3 Instance
+
+Resources:
+	DevEC2Instance:
+	 	Type: AWS::EC2::Instance
+		Properties:
+			ImageId: ami-0cd3dfa4e37921605
+			InstanceType: t2.micro
+			KeyName: cfn-key
+			SecurityGroups:
+				- default
+				- !Ref SSHSecurityGroup 
+	SSHSecurityGroup:
+		Type: AWS:EC2::securityGroup
+		Properties:
+			GroupDescription: my new SSH SG
+			SecurityGroupIngress:
+				- IpProtocol: tcp
+				  FromPort: '22'
+				  ToPort: '22'
+				  CidrIp: 0.0.0.0/0
+				- IpProtocol: tcp
+				  FromPort: '8080'
+				  ToPort: '8080'
+				  CidrIp: 0.0.0.0/0
+				- IpProtocol: tcp
+				  FromPort: '8080'
+				  ToPort: '8080'
+				  CidrIp: 0.0.0.0/0
+	MyElasticIP:
+		Type: AWS:EC2::EIP
+		Properties:
+			InstanceId: !Ref DevEC2Instance
+
+---------------------------------
+
+create a parameter type of AWS for keyname property of ec2 instance
+
+
+AWSTemplateFormatVersion: 2020-02-19
+Description: Basic EC3 Instance
+
+Parameter:
+	MyKeyName:
+		Description: Select the key name from the list
+		Type: AWS::EC2::KeyPair::KeyName
+
+Resources:
+	DevEC2Instance:
+	 	Type: AWS::EC2::Instance
+		Properties:
+			ImageId: ami-0cd3dfa4e37921605
+			InstanceType: t2.micro
+			KeyName: !Ref MyKeyName	     ( from parameter keyword )
+			SecurityGroups:
+				- default
+				- !Ref SSHSecurityGroup 
+	SSHSecurityGroup:
+		Type: AWS:EC2::securityGroup
+		Properties:
+			GroupDescription: my new SSH SG
+			SecurityGroupIngress:
+				- IpProtocol: tcp
+				  FromPort: '22'
+				  ToPort: '22'
+				  CidrIp: 0.0.0.0/0
+				- IpProtocol: tcp
+				  FromPort: '8080'
+				  ToPort: '8080'
+				  CidrIp: 0.0.0.0/0
+				- IpProtocol: tcp
+				  FromPort: '8080'
+				  ToPort: '8080'
+				  CidrIp: 0.0.0.0/0
+	MyElasticIP:
+		Type: AWS:EC2::EIP
+		Properties:
+			InstanceId: !Ref DevEC2Instance
+
+----------------------------------------------------
+
+create parameter type of string for availabilityZone property of ec2 instance
+
+
+AWSTemplateFormatVersion: 2020-02-19
+Description: AZ parameter demo
+Parameter:
+	MyKeyName:
+		Description: Select the key name from the list
+		Type: AWS::EC2::KeyPair::KeyName
+	MyAvailabolityZone:
+		Description: Select the AZ
+		Type: String
+		Default: us-east-2a
+		AllowedValues:
+		   - us-east-2a
+		   - us-east-2b
+		   - us-east-2c
+
+Resources:
+	DevEC2Instance:
+	 	Type: AWS::EC2::Instance
+		Properties:
+			ImageId: ami-0cd3dfa4e37921605
+			InstanceType: t2.micro
+			KeyName: !Ref MyKeyName	---------modified
+			SecurityGroups:
+				- default
+				- !Ref SSHSecurityGroup 
+			AvailablityZone: !Ref MyAvailabolityZone
+	SSHSecurityGroup:
+		Type: AWS:EC2::securityGroup
+		Properties:
+			GroupDescription: my new SSH SG
+			SecurityGroupIngress:
+				- IpProtocol: tcp
+				  FromPort: '22'
+				  ToPort: '22'
+				  CidrIp: 0.0.0.0/0
+				- IpProtocol: tcp
+				  FromPort: '8080'
+				  ToPort: '8080'
+				  CidrIp: 0.0.0.0/0
+				- IpProtocol: tcp
+				  FromPort: '8080'
+				  ToPort: '8080'
+				  CidrIp: 0.0.0.0/0
+	MyElasticIP:
+		Type: AWS:EC2::EIP
+		Properties:
+			InstanceId: !Ref DevEC2Instance
+
+----------------------
+Create parameter type string for instance type property of ec2 instance
+
+
+
+AWSTemplateFormatVersion: 2020-02-19
+Description: AZ parameter demo
+Parameter:
+	MyKeyName:
+		Description: Select the key name from the list
+		Type: AWS::EC2::KeyPair::KeyName
+	MyAvailabolityZone:
+		Description: Select the AZ
+		Type: String
+		Default: us-east-2a
+		AllowedValues:
+		   - us-east-2a
+		   - us-east-2b
+		   - us-east-2c
+	MyInstanceType:
+		Description: select the ec2 instance type from list
+		Type: String
+		Default: t2.micro
+		AllowedValues:
+		  - t2.micro
+	 	  - t2.small
+
+Resources:
+	DevEC2Instance:
+	 	Type: AWS::EC2::Instance
+		Properties:
+			ImageId: ami-0cd3dfa4e37921605
+			InstanceType: !Ref MyInstanceType	---modified
+			KeyName: !Ref MyKeyName	---------modified
+			SecurityGroups:
+				- default
+				- !Ref SSHSecurityGroup 
+			AvailablityZone: !Ref MyAvailabolityZone     --modified
+	SSHSecurityGroup:
+		Type: AWS:EC2::securityGroup
+		Properties:
+			GroupDescription: my new SSH SG
+			SecurityGroupIngress:
+				- IpProtocol: tcp
+				  FromPort: '22'
+				  ToPort: '22'
+				  CidrIp: 0.0.0.0/0
+				- IpProtocol: tcp
+				  FromPort: '8080'
+				  ToPort: '8080'
+				  CidrIp: 0.0.0.0/0
+				- IpProtocol: tcp
+				  FromPort: '8080'
+				  ToPort: '8080'
+				  CidrIp: 0.0.0.0/0
+	MyElasticIP:
+		Type: AWS:EC2::EIP
+		Properties:
+			InstanceId: !Ref DevEC2Instance
+
+
+------------------
+
+Create a parameter type of ssm for InstanceType property of ec2 instance.
+	Pre-requisite : create a ssm parameter in parameter store
+
+
+go to ec2 management console and systems manager - parameter store instance - create parameter 
+
+Name : inst1
+Description: inst1 Description
+Type: string
+Value: t2.small
+
+
+
+
+AWSTemplateFormatVersion: 2020-02-19
+Description: AZ parameter demo
+Parameter:
+	MyKeyName:
+		Description: Select the key name from the list
+		Type: AWS::EC2::KeyPair::KeyName
+	MyAvailabolityZone:
+		Description: Select the AZ
+		Type: String
+		Default: us-east-2a
+		AllowedValues:
+		   - us-east-2a
+		   - us-east-2b
+		   - us-east-2c
+	MyInstanceType:
+		Description: select the ec2 instance type from from ssm
+		Type: AWS::SSM::Parameter::Value<String>	-- modified what value you want u can enter on configure stack 
+		
+Resources:
+	DevEC2Instance:
+	 	Type: AWS::EC2::Instance
+		Properties:
+			ImageId: ami-0cd3dfa4e37921605
+			InstanceType: !Ref MyInstanceType	---modified
+			KeyName: !Ref MyKeyName	---------modified
+			SecurityGroups:
+				- default
+				- !Ref SSHSecurityGroup 
+			AvailablityZone: !Ref MyAvailabolityZone     --modified
+	SSHSecurityGroup:
+		Type: AWS:EC2::securityGroup
+		Properties:
+			GroupDescription: my new SSH SG
+			SecurityGroupIngress:
+				- IpProtocol: tcp
+				  FromPort: '22'
+				  ToPort: '22'
+				  CidrIp: 0.0.0.0/0
+				- IpProtocol: tcp
+				  FromPort: '8080'
+				  ToPort: '8080'
+				  CidrIp: 0.0.0.0/0
+				- IpProtocol: tcp
+				  FromPort: '8080'
+				  ToPort: '8080'
+				  CidrIp: 0.0.0.0/0
+	MyElasticIP:
+		Type: AWS:EC2::EIP
+		Properties:
+			InstanceId: !Ref DevEC2Instance
+
+-----------------------------------------------------------------------------------
+
+EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType:
+        Ref: InstanceType
+      SecurityGroups:
+      - Ref: InstanceSecurityGroup
+      KeyName:
+        Ref: KeyName
+      ImageId:
+        Fn::FindInMap:
+        - AWSRegionArch2AMI
+        - Ref: AWS::Region
+        - Fn::FindInMap:
+          - AWSInstanceType2Arch
+          - Ref: InstanceType
+          - Arch
+
+
+
+
+InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp:
+          Ref: SSHLocation
+
+Parameters:
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+  InstanceType:
+    Description: WebServer EC2 instance type
+    Type: String
+    Default: t2.small
+    AllowedValues:
+    - t1.micro
+    - t2.nano
+    - t2.micro
+    - t2.small
+    - t2.medium
+
+
+aunching the Stack
+
+
+
+$ aws cloudformation create-stack --template-body file://templates/single-instance.yml --stack-name single-instance --parameters ParameterKey=KeyName,ParameterValue=tutorial ParameterKey=InstanceType,ParameterValue=t2.micro
+
+
+Cleanup
+
+
+aws cloudformation delete-stack --stack-name single-instance
+
+
+----------------------
+
+Mapping
+
+syntax
+
+. Parameters
+  . Map Name 
+  . Top Level Key
+  . Secound Level Key
+  . Return Value
+
+AWSTemplateFormatVersion: 2020-02-20
+
+
+Mappings:
+   MyregionMap:
+	us-east-2:
+	 HVM64: ami-id
+	us-west-1:
+	 HVM64: ami-id
+
+
+Resources:
+  MyVMInstance:
+	Type: AWS::EC2::Instance
+	Properties:
+	 ImageId: !FindInMap
+ 	   - MyReionMap
+	   - !Ref 'AWS::Region'
+	   - HVM64
+	 INstanceType: t2.micro
+	 KeyName: cfn-key-1
+
+-----------------------------------------------------------
+
+cREATE NEW ENVIRONMENT MAP
+
+AWSTemplateFormatVersion: 2020-02-20
+
+Parameters:
+    MyKeyName:
+	Description: Select key name from thelist
+	Type: AWS::EC2::KeyPair::KeyName
+    EnvironmentName:
+        Description: select the environment
+	Type: String
+	Default: dev
+	AllowedValues:
+	  - dev
+	  - prod
+Mappings:
+   MyregionMap:
+	us-east-2:
+	 
+HVM64: ami-id
+	us-west-1:
+	 HVM64: ami-id
+
+  MyEnvironmentMap:
+	dev:
+ 	 InstanceType: t2.micro
+	Prod:
+	 InstanceType: t2.small
+
+
+Resources:
+  MyVMInstance:
+	Type: AWS::EC2::Instance
+	Properties:
+	 ImageId: !FindInMap
+ 	   - MyReionMap
+	   - !Ref 'AWS::Region'
+	   - HVM64
+	 INstanceType: !FindInMap
+	   - MyEnvironmentMap
+	   - !Ref EnvironmentName
+	   - InstanceType
+	
+	 KeyName: !Ref MyKeyName
+
+-----------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
